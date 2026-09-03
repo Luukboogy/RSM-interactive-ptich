@@ -186,6 +186,20 @@
     color: var(--gray-mid);
   }
 
+  /* ---------- shared chart legend (waardescenario's + historisch) ---------- */
+  .chart-legend{ display:flex; gap:18px; margin-bottom:14px; flex-wrap:wrap; }
+  .legend-item{ display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--gray); }
+  .legend-swatch{ width:10px; height:10px; border-radius:2px; display:inline-block; }
+
+  /* ---------- WAARDESCENARIO'S ---------- */
+  #scenarioChart{ width:100%; height:auto; display:block; }
+  .ws-metrics{ display:flex; gap:14px; margin-top:18px; }
+  .ws-metric{ flex:1; background:var(--recessed); border-radius:10px; padding:14px 16px; display:flex; flex-direction:column; gap:6px; }
+  .ws-metric .label{ font-size:11px; color:var(--gray-mid); font-weight:600; }
+  .ws-metric .value{ font-size:20px; font-weight:700; color:var(--navy); }
+  .ws-metric.emphasis{ background:var(--blue-tint); }
+  .ws-metric.emphasis .value{ color:var(--blue); font-size:24px; }
+
   /* ---------- BRIDGE ---------- */
   .bridge-row{
     display:flex; align-items:stretch; gap:14px;
@@ -218,6 +232,10 @@
   .explainer p{ font-size:12.5px; line-height:1.55; margin:0 0 10px 0; }
   .explainer ul{ margin:0; padding-left:18px; }
   .explainer li{ font-size:12.5px; line-height:1.6; margin-bottom:4px; }
+
+  /* ---------- HISTORISCHE ONTWIKKELING ---------- */
+  #histChart{ width:100%; height:auto; display:block; }
+  .hist-pills-wrap{ margin-top:18px; max-width:440px; }
 
   /* ---------- ONDERBOUWING ---------- */
   .onderbouwing-intro{ font-size:11.5px; color:var(--gray-mid); font-style:italic; margin:0 0 18px 0; max-width:700px; }
@@ -285,6 +303,7 @@
     .ob-content{ flex-direction:column; }
     .ob-inputs{ flex:none; width:100%; }
     .card{ padding: 24px 20px; }
+    .ws-metrics{ flex-direction:column; }
   }
 </style>
 </head>
@@ -353,7 +372,32 @@
       <div class="source-line" id="sourceLine">Bron: Brookz Overname Barometer H1 2026.</div>
     </section>
 
-    <!-- ================= 3. VALUE BRIDGE ================= -->
+    <!-- ================= 3. WAARDESCENARIO'S ================= -->
+    <section class="card waardescenarios">
+      <div class="eyebrow">Waardescenario's</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#63666A"></span>Conservatief</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#009CDE"></span>Marktgemiddelde</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#3F9C35"></span>Optimistisch</span>
+      </div>
+      <svg id="scenarioChart" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="ws-metrics">
+        <div class="ws-metric">
+          <div class="label">Conservatief</div>
+          <div class="num value" id="wsConsVal">€0,0m</div>
+        </div>
+        <div class="ws-metric emphasis">
+          <div class="label">Marktgemiddelde</div>
+          <div class="num value" id="wsAvgVal">€0,0m</div>
+        </div>
+        <div class="ws-metric">
+          <div class="label">Optimistisch</div>
+          <div class="num value" id="wsOptVal">€0,0m</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 4. VALUE BRIDGE ================= -->
     <section class="card bridge">
       <div class="eyebrow">Van ondernemingswaarde naar waarde voor de aandeelhouder</div>
       <div class="bridge-row">
@@ -376,7 +420,7 @@
       <p class="bridge-explainer">Enterprise Value is de waarde van de onderneming zelf, ongeacht hoe deze gefinancierd is. Equity Value is wat aandeelhouders overhouden na aftrek van de netto rentedragende schuld (negatief = netto kaspositie) — dit is het bedrag dat u bij verkoop daadwerkelijk ontvangt.</p>
     </section>
 
-    <!-- ================= 4. EXPLAINER ================= -->
+    <!-- ================= 5. EXPLAINER ================= -->
     <section class="card explainer">
       <div class="explainer-title">Wat is genormaliseerde EBITDA?</div>
       <p>Genormaliseerde EBITDA is de operationele winst gecorrigeerd voor posten die geen goed beeld geven van de structurele verdiencapaciteit van de onderneming. Typische correcties zijn:</p>
@@ -387,7 +431,24 @@
       </ul>
     </section>
 
-    <!-- ================= 5. ONDERBOUWING ================= -->
+    <!-- ================= 6. HISTORISCHE ONTWIKKELING EN VOORUITZICHT ================= -->
+    <section class="card historisch">
+      <div class="eyebrow">Historische ontwikkeling en vooruitzicht</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#009CDE"></span>Werkelijk</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#009CDE; opacity:.4; border:1px dashed #009CDE"></span>Prognose</span>
+      </div>
+      <svg id="histChart" viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="hist-pills-wrap">
+        <div class="pills" role="group">
+          <button type="button" class="pill" data-growth="cons">Conservatief<span class="num pill-value" id="growthConsVal">–</span></button>
+          <button type="button" class="pill" data-growth="basis">Basis<span class="num pill-value" id="growthBasisVal">–</span></button>
+          <button type="button" class="pill" data-growth="opt">Optimistisch<span class="num pill-value" id="growthOptVal">–</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 7. ONDERBOUWING ================= -->
     <section class="card onderbouwing">
       <div class="onderbouwing-title">Onderbouwing</div>
       <p class="onderbouwing-intro">Gedetailleerde onderbouwing van de kop­cijfers hierboven, op basis van vier waarderingsmethodieken.</p>
@@ -456,6 +517,7 @@
 (function(){
   const NAVY = "#00153D";
   const BLUE = "#009CDE";
+  const GREEN = "#3F9C35";
   const GRAY = "#63666A";
   const GRAY_MID = "#888B8D";
   const GRAY_LIGHT = "#CCCFCF";
@@ -710,6 +772,207 @@
   }
 
   // ---------------------------------------------------------------
+  // Waardescenario's — grouped bar chart of Equity Value across five
+  // EBITDA buckets (-20% / -10% / Huidig / +10% / +20%), one bar group
+  // per bucket, driven by the same computePresets()/size-curve logic.
+  // ---------------------------------------------------------------
+  const SCENARIO_COLORS = { cons: GRAY, avg: BLUE, opt: GREEN };
+
+  function drawScenarioChart(ebitda, netDebt, sectorKey){
+    const chart = document.getElementById("scenarioChart");
+    while(chart.firstChild) chart.removeChild(chart.firstChild);
+
+    const buckets = [
+      { factor:-0.2, label:"-20%" },
+      { factor:-0.1, label:"-10%" },
+      { factor:0,    label:"Huidig" },
+      { factor:0.1,  label:"+10%" },
+      { factor:0.2,  label:"+20%" }
+    ].map(b => {
+      const bucketEbitda = Math.max(0.01, ebitda * (1 + b.factor));
+      const presets = computePresets(bucketEbitda, sectorKey);
+      return {
+        label: b.label,
+        isCurrent: b.factor === 0,
+        cons: bucketEbitda * presets.cons - netDebt,
+        avg:  bucketEbitda * presets.avg  - netDebt,
+        opt:  bucketEbitda * presets.opt  - netDebt
+      };
+    });
+
+    // update the three metric readouts from the "Huidig" bucket
+    const current = buckets.find(b => b.isCurrent);
+    document.getElementById("wsConsVal").textContent = euro(current.cons);
+    document.getElementById("wsAvgVal").textContent = euro(current.avg);
+    document.getElementById("wsOptVal").textContent = euro(current.opt);
+
+    const W = 900, H = 340;
+    const marginLeft = 55, marginRight = 20, marginTop = 20, marginBottom = 46;
+    const plotW = W - marginLeft - marginRight, plotH = H - marginTop - marginBottom;
+
+    const allVals = buckets.flatMap(b => [b.cons, b.avg, b.opt]);
+    const minVal = Math.min(...allVals, 0);
+    const maxVal = Math.max(...allVals, 0);
+    const pad = Math.max((maxVal - minVal) * 0.15, 0.5);
+    const t = niceTicks(minVal - pad, maxVal + pad, 5);
+    const domainMin = t.min, domainMax = t.max;
+
+    function y(v){ return marginTop + plotH - (v - domainMin) / (domainMax - domainMin) * plotH; }
+    const baseline = y(0);
+
+    t.ticks.filter(v => v >= domainMin - 1e-9 && v <= domainMax + 1e-9).forEach(v => {
+      const gy = y(v);
+      chart.appendChild(svgEl("line", { x1:marginLeft, x2:W-marginRight, y1:gy, y2:gy, stroke:"#E3E7EE", "stroke-width":1 }));
+      const lbl = svgEl("text", { x:marginLeft-8, y:gy+4, "text-anchor":"end", "font-size":10, fill:GRAY_MID });
+      lbl.setAttribute("class","num");
+      lbl.textContent = Math.round(v);
+      chart.appendChild(lbl);
+    });
+
+    const groupWidth = plotW / buckets.length;
+    const groupPad = 14, barGap = 6;
+    const barWidth = (groupWidth - 2*groupPad - 2*barGap) / 3;
+
+    // highlight band behind the "Huidig" group (drawn before bars/baseline)
+    buckets.forEach((b, i) => {
+      if(!b.isCurrent) return;
+      chart.appendChild(svgEl("rect", {
+        x: marginLeft + i*groupWidth, y: marginTop,
+        width: groupWidth, height: plotH,
+        fill: "#EAF6FC"
+      }));
+    });
+
+    chart.appendChild(svgEl("line", { x1:marginLeft, x2:W-marginRight, y1:baseline, y2:baseline, stroke:GRAY_LIGHT, "stroke-width":1 }));
+
+    buckets.forEach((b, i) => {
+      const groupX0 = marginLeft + i*groupWidth;
+      ["cons","avg","opt"].forEach((key, j) => {
+        const barX = groupX0 + groupPad + j*(barWidth + barGap);
+        const value = b[key];
+        const barTop = Math.min(y(value), baseline);
+        const barH = Math.max(Math.abs(y(value) - baseline), 1);
+        chart.appendChild(svgEl("rect", { x:barX, y:barTop, width:barWidth, height:barH, fill: SCENARIO_COLORS[key] }));
+
+        if(b.isCurrent){
+          const lbl = svgEl("text", {
+            x: barX + barWidth/2, y: value >= 0 ? barTop - 6 : barTop + barH + 12,
+            "text-anchor":"middle", "font-size":10, "font-weight":700, fill: SCENARIO_COLORS[key]
+          });
+          lbl.setAttribute("class","num");
+          lbl.textContent = euro(value);
+          chart.appendChild(lbl);
+        }
+      });
+
+      const yearLbl = svgEl("text", {
+        x: groupX0 + groupWidth/2, y: marginTop + plotH + 20,
+        "text-anchor":"middle", "font-size":11.5,
+        "font-weight": b.isCurrent ? 700 : 400,
+        fill: b.isCurrent ? NAVY : GRAY
+      });
+      yearLbl.textContent = b.label;
+      chart.appendChild(yearLbl);
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // Historische ontwikkeling en vooruitzicht — single bar chart,
+  // three actual years plus two forecast years driven by a growth
+  // scenario pill. Only the forecast bars change when the pill changes.
+  // ---------------------------------------------------------------
+
+  // Vervang door werkelijke cijfers per deal
+  const HIST_ACTUAL = { 2023: 0.85, 2024: 0.95, 2025: 1.0 };
+
+  // Groeiscenario's toegepast op het laatste werkelijke jaar — aanpasbaar per deal
+  const GROWTH_RATES = { cons: 0.02, basis: 0.06, opt: 0.12 };
+
+  const growthPillEls = {
+    cons: document.querySelector('[data-growth="cons"]'),
+    basis: document.querySelector('[data-growth="basis"]'),
+    opt: document.querySelector('[data-growth="opt"]')
+  };
+  let activeGrowthKey = "basis";
+
+  function setActiveGrowthPill(key){
+    activeGrowthKey = key;
+    Object.keys(growthPillEls).forEach(k => growthPillEls[k].classList.toggle("active", k === key));
+    drawHistChart();
+  }
+  Object.keys(growthPillEls).forEach(key => {
+    growthPillEls[key].addEventListener("click", () => setActiveGrowthPill(key));
+  });
+
+  function drawHistChart(){
+    const chart = document.getElementById("histChart");
+    while(chart.firstChild) chart.removeChild(chart.firstChild);
+
+    const rate = GROWTH_RATES[activeGrowthKey];
+    const y2025 = HIST_ACTUAL[2025];
+    const y2026 = y2025 * (1 + rate);
+    const y2027 = y2026 * (1 + rate);
+
+    const years = [
+      { label:"2023", value:HIST_ACTUAL[2023], forecast:false },
+      { label:"2024", value:HIST_ACTUAL[2024], forecast:false },
+      { label:"2025", value:y2025,             forecast:false },
+      { label:"2026", value:y2026,             forecast:true },
+      { label:"2027", value:y2027,             forecast:true }
+    ];
+
+    const W = 900, H = 320;
+    const marginLeft = 55, marginRight = 20, marginTop = 20, marginBottom = 46;
+    const plotW = W - marginLeft - marginRight, plotH = H - marginTop - marginBottom;
+
+    const maxVal = Math.max(...years.map(yr => yr.value));
+    const pad = Math.max(maxVal * 0.15, 0.2);
+    const t = niceTicks(0, maxVal + pad, 5);
+    const domainMin = 0, domainMax = t.max;
+
+    function y(v){ return marginTop + plotH - (v - domainMin) / (domainMax - domainMin) * plotH; }
+    const baseline = y(0);
+
+    t.ticks.filter(v => v <= domainMax + 1e-9).forEach(v => {
+      const gy = y(v);
+      chart.appendChild(svgEl("line", { x1:marginLeft, x2:W-marginRight, y1:gy, y2:gy, stroke:"#E3E7EE", "stroke-width":1 }));
+      const lbl = svgEl("text", { x:marginLeft-8, y:gy+4, "text-anchor":"end", "font-size":10, fill:GRAY_MID });
+      lbl.setAttribute("class","num");
+      lbl.textContent = fmt(v, 1);
+      chart.appendChild(lbl);
+    });
+    chart.appendChild(svgEl("line", { x1:marginLeft, x2:W-marginRight, y1:baseline, y2:baseline, stroke:GRAY_LIGHT, "stroke-width":1 }));
+
+    const groupWidth = plotW / years.length;
+    const barWidth = groupWidth * 0.45;
+
+    years.forEach((yr, i) => {
+      const cx = marginLeft + i*groupWidth + groupWidth/2;
+      const barX = cx - barWidth/2;
+      const barTop = y(yr.value);
+      const barH = Math.max(baseline - barTop, 1);
+
+      const rectAttrs = { x:barX, y:barTop, width:barWidth, height:barH, fill:BLUE };
+      if(yr.forecast){
+        rectAttrs["fill-opacity"] = 0.4;
+        rectAttrs.stroke = BLUE;
+        rectAttrs["stroke-width"] = 1.5;
+        rectAttrs["stroke-dasharray"] = "4,3";
+      }
+      chart.appendChild(svgEl("rect", rectAttrs));
+
+      const valLbl = svgEl("text", { x:cx, y:barTop-8, "text-anchor":"middle", "font-size":11, "font-weight":700, fill: yr.forecast ? GRAY : NAVY });
+      valLbl.setAttribute("class","num");
+      valLbl.textContent = euro(yr.value);
+      chart.appendChild(valLbl);
+
+      const yearLbl = svgEl("text", { x:cx, y:baseline+18, "text-anchor":"middle", "font-size":11.5, "font-weight": yr.forecast ? 400 : 600, fill:GRAY });
+      yearLbl.textContent = yr.label;
+      chart.appendChild(yearLbl);
+    });
+  }
+
+  // ---------------------------------------------------------------
   // Master recalculation
   // ---------------------------------------------------------------
   const obIds = ["ebit","cca_ebit_median","cca_ebit_range","cca_ebitda_median","cca_ebitda_range","cta_ebit_median","cta_ebit_range","cta_ebitda_median","cta_ebitda_range"];
@@ -762,7 +1025,15 @@
     const blendedLow = Math.min(...methodologies.map(m => m.low));
     const blendedHigh = Math.max(...methodologies.map(m => m.high));
     drawChart(methodologies, blendedLow, blendedHigh);
+
+    // --- Waardescenario's ---
+    drawScenarioChart(ebitda, netDebt, sectorSelect.value);
   }
+
+  document.getElementById("growthConsVal").textContent = fmt(GROWTH_RATES.cons*100, 0) + "%";
+  document.getElementById("growthBasisVal").textContent = fmt(GROWTH_RATES.basis*100, 0) + "%";
+  document.getElementById("growthOptVal").textContent = fmt(GROWTH_RATES.opt*100, 0) + "%";
+  setActiveGrowthPill("basis");
 
   updateSourceLine();
   setActivePill("avg");
