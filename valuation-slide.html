@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSM — Indicatieve Waardering</title>
+<style>
+  :root{
+    --rsm-navy:   #00153D;
+    --rsm-blue:   #009CDE;
+    --rsm-green:  #3F9C35;
+    --rsm-gray:   #63666A;
+    --rsm-gray-mid: #888B8D;
+    --rsm-gray-light: #CCCFCF;
+    --rsm-white:  #FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    padding:0;
+    background:#EDEEEE;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--rsm-gray);
+  }
+  .num{
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+  .slide{
+    max-width: 1180px;
+    margin: 28px auto;
+    background: var(--rsm-white);
+    padding: 40px 48px 24px 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  }
+  header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom: 22px;
+  }
+  header .logo{ height: 30px; width:auto; display:block; }
+  header .tag{
+    font-size: 11px;
+    color: var(--rsm-gray-mid);
+    letter-spacing: 0.02em;
+  }
+  h1{
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--rsm-gray);
+    margin: 0 0 26px 0;
+    max-width: 980px;
+  }
+  h1 .num{ font-weight:700; color: var(--rsm-navy); }
+
+  .content{
+    display:flex;
+    gap: 36px;
+    align-items:flex-start;
+  }
+  .inputs{
+    flex: 0 0 340px;
+    min-width: 300px;
+  }
+  .chart-area{
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .base-inputs{
+    display:flex;
+    gap: 14px;
+    margin-bottom: 18px;
+  }
+  .field{
+    flex:1;
+    background: #F5F6F6;
+    border: 1px solid var(--rsm-gray-light);
+    padding: 10px 12px;
+  }
+  .field label{
+    display:block;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--rsm-gray-mid);
+    margin-bottom: 5px;
+  }
+  .field .row{ display:flex; align-items:baseline; gap:4px; }
+  .field .prefix{ font-size:13px; color:var(--rsm-gray); }
+  .field input[type=number]{
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-size: 17px;
+    color: var(--rsm-navy);
+    font-weight: 700;
+    padding: 0;
+  }
+  .field input[type=number]:focus{ outline: 1px solid var(--rsm-blue); }
+
+  .section-label{
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--rsm-gray-mid);
+    margin: 4px 0 8px 2px;
+  }
+
+  .cards{ display:flex; flex-direction:column; gap: 10px; }
+  .card{
+    background: var(--rsm-gray-light);
+    padding: 12px 14px;
+  }
+  .card .head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    margin-bottom: 8px;
+  }
+  .card .name{
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--rsm-navy);
+  }
+  .card .basis{
+    font-size: 10px;
+    color: var(--rsm-gray);
+    background: rgba(255,255,255,0.55);
+    padding: 2px 6px;
+  }
+  .card .full{
+    font-size: 10px;
+    color: var(--rsm-gray-mid);
+    margin: -6px 0 8px 0;
+  }
+  .card .inputs-row{
+    display:flex;
+    gap: 10px;
+  }
+  .card .mini-field{ flex:1; }
+  .card .mini-field label{
+    display:block;
+    font-size: 9.5px;
+    color: var(--rsm-gray);
+    margin-bottom: 3px;
+  }
+  .card .mini-field .row{ display:flex; align-items:baseline; }
+  .card input[type=number]{
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--rsm-gray-mid);
+    background: transparent;
+    font-size: 13.5px;
+    color: var(--rsm-gray);
+    padding: 2px 0;
+  }
+  .card input[type=number]:focus{ outline:none; border-bottom-color: var(--rsm-blue); }
+  .card .suffix{ font-size:12px; color:var(--rsm-gray-mid); margin-left:3px; }
+
+  .chart-caption{
+    font-size: 13px;
+    color: var(--rsm-gray);
+    margin: 0 0 6px 2px;
+  }
+  #chart{ width:100%; height:auto; display:block; }
+
+  .commentary{
+    font-size: 12.5px;
+    font-style: italic;
+    color: var(--rsm-gray-mid);
+    line-height: 1.5;
+    border-top: 1px solid var(--rsm-gray-light);
+    padding-top: 12px;
+    margin-top: 10px;
+  }
+
+  footer{
+    margin-top: 26px;
+    padding-top: 10px;
+    border-top: 1px solid var(--rsm-gray-light);
+    font-size: 9px;
+    color: var(--rsm-gray);
+    text-align: left;
+  }
+
+  @media (max-width: 860px){
+    .content{ flex-direction:column; }
+    .inputs{ flex: none; width:100%; }
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+
+  <header>
+    <svg class="logo" viewBox="0 0 283.47 119.05" xmlns="http://www.w3.org/2000/svg">
+      <rect x="104.88" y="0" width="178.58" height="29.76" fill="#009CDE"/>
+      <rect x="0" y="0" width="22.68" height="29.76" fill="#888B8D"/>
+      <rect x="35.43" y="0" width="56.69" height="29.76" fill="#3F9C35"/>
+      <path d="M153.99 74.28C153.99 67.27 151.61 61.63 147.11 58.02 142.48 54.34 137.1 53.46 129.13 53.46L104.88 53.46 104.88 118.1 118.03 118.1 118.03 65.1 129.61 65.1C132.88 65.1 135.26 65.51 136.83 66.46 139.14 67.82 140.51 70.34 140.51 74.28 140.51 81.02 136.36 83.4 130.91 83.4L122.15 83.4 122.15 95.1 127.37 95.1 141.05 118.1 156.24 118.1 141.05 92.93C149.91 90.34 153.99 82.99 153.99 74.28Z" fill="#63666A"/>
+      <path d="M193.84 81.49C184.51 78.29 174.02 77.88 174.02 70.81 174.02 66.26 178.18 64.15 184.1 64.15 190.02 64.15 195.07 64.69 203.78 67.01L203.78 55.31C196.29 53.2 190.84 52.45 183.76 52.45 170.95 52.45 160.12 57.55 160.12 70.55 160.12 80.82 165.22 85.99 175.31 89.46 184.3 92.53 194.45 93.14 194.45 100.08 194.45 105.26 189.41 107.43 182.13 107.43 174.85 107.43 170.62 106.88 161.56 104.43L161.56 116.2C169.12 118.45 175.45 119.07 182.81 119.07 198.88 119.07 208.29 112.06 208.29 99.07 208.29 88.79 201.55 84.17 193.85 81.51Z" fill="#63666A"/>
+      <path d="M266.3 53.46 243.21 118.1 255.75 118.1 270.39 77 270.59 77 270.59 118.1 283.47 118.1 283.47 53.46 266.3 53.46Z" fill="#63666A"/>
+      <path d="M247.69 93.69 232.66 53.46 215.22 53.46 215.22 118.1 227.96 118.1 227.96 77 228.16 77 241.19 111.87 247.69 93.69Z" fill="#63666A"/>
+    </svg>
+    <div class="tag">Proof of concept — interactieve waarderingstool</div>
+  </header>
+
+  <h1>Op basis van een EBITDA van €<span class="num" id="titleEbitda">0,0</span>m, ligt de indicatieve waardering tussen de €<span class="num" id="titleLow">0,0</span>m&nbsp;–&nbsp;€<span class="num" id="titleHigh">0,0</span>m</h1>
+
+  <div class="content">
+
+    <div class="inputs">
+      <div class="section-label">Uitgangspunten</div>
+      <div class="base-inputs">
+        <div class="field">
+          <label>EBITDA</label>
+          <div class="row"><span class="prefix">€</span><input type="number" id="ebitda" value="5.0" step="0.1" min="0"><span class="prefix">m</span></div>
+        </div>
+        <div class="field">
+          <label>EBIT</label>
+          <div class="row"><span class="prefix">€</span><input type="number" id="ebit" value="4.0" step="0.1" min="0"><span class="prefix">m</span></div>
+        </div>
+      </div>
+
+      <div class="section-label">Waarderingsmethodieken</div>
+      <div class="cards">
+
+        <div class="card">
+          <div class="head"><span class="name">CCA EV/EBIT</span><span class="basis">basis: EBIT</span></div>
+          <div class="full">Comparable Companies Analysis</div>
+          <div class="inputs-row">
+            <div class="mini-field">
+              <label>Mediaan multiple</label>
+              <div class="row"><input type="number" id="cca_ebit_median" value="9.0" step="0.1" min="0"><span class="suffix">x</span></div>
+            </div>
+            <div class="mini-field">
+              <label>Range (±)</label>
+              <div class="row"><input type="number" id="cca_ebit_range" value="1.0" step="0.1" min="0"><span class="suffix">x</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="head"><span class="name">CCA EV/EBITDA</span><span class="basis">basis: EBITDA</span></div>
+          <div class="full">Comparable Companies Analysis</div>
+          <div class="inputs-row">
+            <div class="mini-field">
+              <label>Mediaan multiple</label>
+              <div class="row"><input type="number" id="cca_ebitda_median" value="7.0" step="0.1" min="0"><span class="suffix">x</span></div>
+            </div>
+            <div class="mini-field">
+              <label>Range (±)</label>
+              <div class="row"><input type="number" id="cca_ebitda_range" value="0.75" step="0.05" min="0"><span class="suffix">x</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="head"><span class="name">CTA EV/EBIT</span><span class="basis">basis: EBIT</span></div>
+          <div class="full">Comparable Transactions Analysis</div>
+          <div class="inputs-row">
+            <div class="mini-field">
+              <label>Mediaan multiple</label>
+              <div class="row"><input type="number" id="cta_ebit_median" value="8.5" step="0.1" min="0"><span class="suffix">x</span></div>
+            </div>
+            <div class="mini-field">
+              <label>Range (±)</label>
+              <div class="row"><input type="number" id="cta_ebit_range" value="1.0" step="0.1" min="0"><span class="suffix">x</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="head"><span class="name">CTA EV/EBITDA</span><span class="basis">basis: EBITDA</span></div>
+          <div class="full">Comparable Transactions Analysis</div>
+          <div class="inputs-row">
+            <div class="mini-field">
+              <label>Mediaan multiple</label>
+              <div class="row"><input type="number" id="cta_ebitda_median" value="6.5" step="0.1" min="0"><span class="suffix">x</span></div>
+            </div>
+            <div class="mini-field">
+              <label>Range (±)</label>
+              <div class="row"><input type="number" id="cta_ebitda_range" value="0.75" step="0.05" min="0"><span class="suffix">x</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="chart-area">
+      <div class="chart-caption">Indicatieve Ondernemingswaarde — Enterprise Value Range (€m)</div>
+      <svg id="chart" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      <!-- Editable commentary line (matches the original slide's footnote) -->
+      <p class="commentary">Een must-have koper zou zijn waardering verder kunnen stretchen op basis van synergiepotentieel, aanvullende <em>buy-and-build</em> strategie, multiple arbitrage en transactiestructurering.</p>
+    </div>
+
+  </div>
+
+  <footer>STRIKT PERSOONLIJK EN VERTROUWELIJK</footer>
+
+</div>
+
+<script>
+(function(){
+  const NAVY = "#00153D";
+  const BLUE = "#009CDE";
+  const GRAY = "#63666A";
+  const GRAY_MID = "#888B8D";
+  const GRAY_LIGHT = "#CCCFCF";
+
+  const ids = [
+    "ebitda","ebit",
+    "cca_ebit_median","cca_ebit_range",
+    "cca_ebitda_median","cca_ebitda_range",
+    "cta_ebit_median","cta_ebit_range",
+    "cta_ebitda_median","cta_ebitda_range"
+  ];
+  const el = {};
+  ids.forEach(id => el[id] = document.getElementById(id));
+
+  function num(id){
+    const v = parseFloat(el[id].value);
+    return isFinite(v) ? v : 0;
+  }
+
+  function fmt(v){
+    return v.toLocaleString('nl-NL', {minimumFractionDigits:1, maximumFractionDigits:1});
+  }
+
+  function niceNum(range, round){
+    const exponent = Math.floor(Math.log10(range || 1));
+    const fraction = range / Math.pow(10, exponent);
+    let niceFraction;
+    if(round){
+      if(fraction < 1.5) niceFraction = 1;
+      else if(fraction < 3) niceFraction = 2;
+      else if(fraction < 7) niceFraction = 5;
+      else niceFraction = 10;
+    } else {
+      if(fraction <= 1) niceFraction = 1;
+      else if(fraction <= 2) niceFraction = 2;
+      else if(fraction <= 5) niceFraction = 5;
+      else niceFraction = 10;
+    }
+    return niceFraction * Math.pow(10, exponent);
+  }
+
+  function niceTicks(min, max, targetCount){
+    const range = niceNum(Math.max(max - min, 1), false);
+    const step = niceNum(range / (targetCount - 1), true);
+    const niceMin = Math.floor(min / step) * step;
+    const niceMax = Math.ceil(max / step) * step;
+    const ticks = [];
+    for(let v = niceMin; v <= niceMax + 1e-9; v += step){
+      ticks.push(Math.round(v * 100) / 100);
+    }
+    return { min: niceMin, max: niceMax, step, ticks };
+  }
+
+  const svgNS = "http://www.w3.org/2000/svg";
+  function svgEl(tag, attrs){
+    const e = document.createElementNS(svgNS, tag);
+    for(const k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function recalc(){
+    const ebitda = num("ebitda");
+    const ebit = num("ebit");
+
+    const methodologies = [
+      { key:"cca_ebit",    name:"CCA EV/EBIT",    base:ebit,   baseLabel:"EBIT" },
+      { key:"cca_ebitda",  name:"CCA EV/EBITDA",  base:ebitda, baseLabel:"EBITDA" },
+      { key:"cta_ebit",    name:"CTA EV/EBIT",    base:ebit,   baseLabel:"EBIT" },
+      { key:"cta_ebitda",  name:"CTA EV/EBITDA",  base:ebitda, baseLabel:"EBITDA" }
+    ];
+
+    methodologies.forEach(m => {
+      const median = num(m.key + "_median");
+      const range = num(m.key + "_range");
+      m.multLow = Math.max(0, median - range);
+      m.multHigh = median + range;
+      m.low = m.base * m.multLow;
+      m.high = m.base * m.multHigh;
+    });
+
+    const blendedLow = Math.min(...methodologies.map(m => m.low));
+    const blendedHigh = Math.max(...methodologies.map(m => m.high));
+
+    // Update headline sentence
+    document.getElementById("titleEbitda").textContent = fmt(ebitda);
+    document.getElementById("titleLow").textContent = fmt(blendedLow);
+    document.getElementById("titleHigh").textContent = fmt(blendedHigh);
+
+    drawChart(methodologies, blendedLow, blendedHigh);
+  }
+
+  function drawChart(methodologies, blendedLow, blendedHigh){
+    const chart = document.getElementById("chart");
+    while(chart.firstChild) chart.removeChild(chart.firstChild);
+
+    const W = 900, H = 340;
+    const plotLeft = 190, plotRight = W - 70;
+    const rowH = 34, rowGap = 20, topPad = 20;
+    const gapBeforeBlended = 30, blendedH = 44;
+
+    const rowsTop = methodologies.map((m,i) => topPad + i*(rowH+rowGap));
+    const blendedTop = rowsTop[rowsTop.length-1] + rowH + gapBeforeBlended;
+    const axisY = blendedTop + blendedH + 24;
+
+    const allLows = methodologies.map(m=>m.low).concat([blendedLow]);
+    const allHighs = methodologies.map(m=>m.high).concat([blendedHigh]);
+    const dataMin = Math.min(...allLows);
+    const dataMax = Math.max(...allHighs);
+    const pad = Math.max((dataMax - dataMin) * 0.15, 1);
+    const domainMinRaw = Math.max(0, dataMin - pad);
+    const domainMaxRaw = dataMax + pad;
+    const t = niceTicks(domainMinRaw, domainMaxRaw, 5);
+    const domainMin = Math.max(0, t.min);
+    const domainMax = t.max;
+
+    function x(v){
+      return plotLeft + (v - domainMin) / (domainMax - domainMin) * (plotRight - plotLeft);
+    }
+
+    // gridlines + tick labels
+    t.ticks.filter(v => v >= domainMin - 1e-9 && v <= domainMax + 1e-9).forEach(v => {
+      const gx = x(v);
+      chart.appendChild(svgEl("line", {
+        x1:gx, x2:gx, y1:10, y2:axisY,
+        stroke: GRAY_LIGHT, "stroke-width":1
+      }));
+      const lbl = svgEl("text", {
+        x:gx, y:axisY+18, "text-anchor":"middle",
+        "font-size":11, fill:GRAY_MID, class:"num", "font-family":"inherit"
+      });
+      lbl.setAttribute("class","num");
+      lbl.textContent = Math.round(v);
+      chart.appendChild(lbl);
+    });
+
+    // baseline axis
+    chart.appendChild(svgEl("line", {
+      x1:plotLeft, x2:plotRight, y1:axisY, y2:axisY,
+      stroke: GRAY, "stroke-width":1.5
+    }));
+
+    // methodology bars
+    methodologies.forEach((m, i) => {
+      const y = rowsTop[i];
+      const x0 = x(m.low), x1 = x(m.high);
+
+      const label = svgEl("text", {
+        x: plotLeft - 12, y: y + rowH/2 + 4,
+        "text-anchor":"end", "font-size":13, "font-weight":700, fill:NAVY
+      });
+      label.textContent = m.name;
+      chart.appendChild(label);
+
+      chart.appendChild(svgEl("rect", {
+        x:x0, y:y, width:Math.max(x1-x0,1), height:rowH,
+        fill:BLUE
+      }));
+
+      const lowLbl = svgEl("text", {
+        x:x0-8, y:y+rowH/2+4, "text-anchor":"end", "font-size":12, fill:GRAY, class:"num"
+      });
+      lowLbl.textContent = "€" + fmt(m.low) + "m";
+      chart.appendChild(lowLbl);
+
+      const highLbl = svgEl("text", {
+        x:x1+8, y:y+rowH/2+4, "text-anchor":"start", "font-size":12, fill:GRAY, class:"num"
+      });
+      highLbl.textContent = "€" + fmt(m.high) + "m";
+      chart.appendChild(highLbl);
+    });
+
+    // blended headline bar
+    {
+      const y = blendedTop;
+      const x0 = x(blendedLow), x1 = x(blendedHigh);
+
+      chart.appendChild(svgEl("rect", {
+        x:plotLeft-2, y:y-6, width:(plotRight-plotLeft)+2+70, height:blendedH+12,
+        fill:"#F2F6F9"
+      }));
+
+      const label = svgEl("text", {
+        x: plotLeft - 12, y: y + blendedH/2 + 4,
+        "text-anchor":"end", "font-size":13.5, "font-weight":700, fill:NAVY
+      });
+      label.textContent = "Blended range";
+      chart.appendChild(label);
+
+      chart.appendChild(svgEl("rect", {
+        x:x0, y:y, width:Math.max(x1-x0,1), height:blendedH,
+        fill:NAVY
+      }));
+
+      const lowLbl = svgEl("text", {
+        x:x0-8, y:y+blendedH/2+5, "text-anchor":"end", "font-size":13, "font-weight":700, fill:NAVY, class:"num"
+      });
+      lowLbl.textContent = "€" + fmt(blendedLow) + "m";
+      chart.appendChild(lowLbl);
+
+      const highLbl = svgEl("text", {
+        x:x1+8, y:y+blendedH/2+5, "text-anchor":"start", "font-size":13, "font-weight":700, fill:NAVY, class:"num"
+      });
+      highLbl.textContent = "€" + fmt(blendedHigh) + "m";
+      chart.appendChild(highLbl);
+    }
+  }
+
+  ids.forEach(id => el[id].addEventListener("input", recalc));
+  recalc();
+})();
+</script>
+
+</body>
+</html>
