@@ -4,73 +4,89 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RSM — Indicatieve Waardering</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --rsm-navy:   #00153D;
-    --rsm-blue:   #009CDE;
-    --rsm-green:  #3F9C35;
-    --rsm-gray:   #63666A;
-    --rsm-gray-mid: #888B8D;
-    --rsm-gray-light: #CCCFCF;
-    --rsm-white:  #FFFFFF;
-    --border: #E2E4E5;
-    --track: #E4E6E7;
-    --page-bg: #F7F8F8;
+    --navy:   #00153D;
+    --blue:   #009CDE;
+    --green:  #3F9C35;
+    --gray:   #63666A;
+    --gray-mid: #888B8D;
+    --gray-light: #CCCFCF;
+
+    --cover-bg: #0A1B33;
+    --text-light: #F3F5F8;
+    --text-light-secondary: #93A3BC;
+
+    --canvas-bg: #EBEFF5;
+    --card-bg: #FDFDFE;
+    --recessed: #F2F4F9;
+    --border: #E1E6EF;
+    --track-light: #E4E6E7;
+    --track-dark: #24365A;
     --blue-tint: #EAF6FC;
+    --card-shadow: 0 1px 2px rgba(10,27,51,0.05), 0 8px 24px rgba(10,27,51,0.05);
   }
   *{box-sizing:border-box;}
   html,body{
     margin:0;
     padding:0;
-    background: var(--page-bg);
-    font-family: Arial, Helvetica, sans-serif;
-    color: var(--rsm-gray);
+    background: var(--canvas-bg);
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    color: var(--gray);
   }
   .num{
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1;
   }
-  .page{
-    max-width: 1000px;
-    margin: 28px auto;
-    background: var(--rsm-white);
-    border: 1px solid var(--border);
+
+  /* ---------- shared section-heading style ---------- */
+  .eyebrow, .onderbouwing-title{
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-mid);
+    margin: 0 0 14px 0;
+    text-transform: none;
+    letter-spacing: normal;
   }
+
+  /* =================== COVER BAND =================== */
+  .cover-band{
+    width: 100%;
+    background: var(--cover-bg);
+  }
+  .cover-inner{
+    max-width: 1048px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
   header{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding: 24px 40px 0 40px;
+    padding: 24px 0 0 0;
   }
   header .logo{ height: 26px; width:auto; display:block; }
   header .tag{
     font-size: 11px;
-    color: var(--rsm-gray-mid);
+    color: var(--text-light-secondary);
     letter-spacing: 0.02em;
   }
 
-  section{ padding: 28px 40px; border-bottom: 1px solid var(--border); }
-  section:last-of-type{ border-bottom:none; }
-
-  .eyebrow{
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--rsm-gray-mid);
-    margin: 0 0 10px 0;
-  }
-
-  /* ---------- HERO ---------- */
-  .hero{ background: #FCFDFD; padding-top:32px; padding-bottom:34px; }
+  .hero{ padding: 32px 0 40px 0; }
+  .hero .eyebrow{ color: var(--text-light-secondary); }
   .hero-value{
     display:flex;
     align-items:baseline;
     gap: 12px;
     margin-bottom: 30px;
   }
-  .hero-value .hero-label{ font-size: 16px; color: var(--rsm-gray); font-weight:400; }
-  .hero-value .hero-number{ font-size: 46px; font-weight:700; color: var(--rsm-navy); line-height:1; }
+  .hero-value .hero-label{ font-size: 16px; color: var(--text-light-secondary); font-weight:400; }
+  .hero-value .hero-number{ font-size: 46px; font-weight:700; color: var(--text-light); line-height:1; }
 
   .sliders{ display:flex; gap: 40px; }
   .slider-block{ flex:1; }
@@ -78,46 +94,66 @@
     display:flex; justify-content:space-between; align-items:baseline;
     margin-bottom: 10px;
   }
-  .slider-label-row label{ font-size: 13px; color: var(--rsm-gray); font-weight:700; }
-  .slider-label-row .slider-value{ font-size: 17px; color: var(--rsm-navy); font-weight:700; }
+  .slider-label-row label{ font-size: 13px; color: var(--text-light-secondary); font-weight:600; }
+  .slider-label-row .slider-value{ font-size: 17px; color: var(--text-light); font-weight:700; }
   .slider-minmax{
     display:flex; justify-content:space-between;
-    font-size: 10.5px; color: var(--rsm-gray-mid); margin-top:6px;
+    font-size: 10.5px; color: var(--text-light-secondary); margin-top:6px;
   }
 
   input[type=range]{
     -webkit-appearance:none; appearance:none;
     width:100%; height:6px; border-radius:3px;
-    background: var(--track);
+    background: var(--track-light);
     outline:none; cursor:pointer;
   }
+  .hero input[type=range]{ background: var(--track-dark); }
   input[type=range]::-webkit-slider-thumb{
     -webkit-appearance:none; appearance:none;
     width:18px; height:18px; border-radius:50%;
-    background:#fff; border:2px solid var(--rsm-blue);
+    background:#fff; border:2px solid var(--blue);
     cursor:pointer;
   }
   input[type=range]::-moz-range-thumb{
     width:16px; height:16px; border-radius:50%;
-    background:#fff; border:2px solid var(--rsm-blue);
+    background:#fff; border:2px solid var(--blue);
     cursor:pointer;
   }
   input[type=range]::-moz-range-track{
-    height:6px; border-radius:3px; background: var(--track);
+    height:6px; border-radius:3px; background: var(--track-light);
   }
+  .hero input[type=range]::-moz-range-track{ background: var(--track-dark); }
   input[type=range]::-moz-range-progress{
-    height:6px; border-radius:3px; background: var(--rsm-blue);
+    height:6px; border-radius:3px; background: var(--blue);
+  }
+
+  /* =================== CANVAS + CARDS =================== */
+  .canvas{ padding: 28px 0 12px 0; }
+  .cards-wrap{
+    max-width: 1048px;
+    margin: 0 auto;
+    padding: 0 24px 24px 24px;
+    display:flex;
+    flex-direction:column;
+    gap: 20px;
+  }
+  .card{
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 28px 32px;
   }
 
   /* ---------- SCENARIO ---------- */
   .scenario-row{ display:flex; align-items:center; gap:12px; margin-bottom:16px; }
-  .scenario-row label{ font-size:13px; font-weight:700; color:var(--rsm-gray); }
+  .scenario-row label{ font-size:13px; font-weight:600; color:var(--gray); }
   select{
     font-family: inherit;
     font-size: 13px;
-    color: var(--rsm-navy);
+    color: var(--navy);
     background: #fff;
     border: 1px solid var(--border);
+    border-radius: 8px;
     padding: 7px 10px;
     flex: 1;
     max-width: 340px;
@@ -129,24 +165,25 @@
     padding: 12px 8px;
     background:#fff;
     border: 1px solid var(--border);
-    color: var(--rsm-gray);
+    border-radius: 8px;
+    color: var(--gray);
     font-family: inherit;
     font-size: 12.5px;
-    font-weight:700;
+    font-weight:600;
     cursor:pointer;
     transition: background .12s ease, color .12s ease, border-color .12s ease;
   }
   .pill .pill-value{ font-size:15px; font-weight:700; }
-  .pill:hover{ border-color: var(--rsm-blue); }
+  .pill:hover{ border-color: var(--blue); }
   .pill.active{
-    background: var(--rsm-blue);
-    border-color: var(--rsm-blue);
+    background: var(--blue);
+    border-color: var(--blue);
     color: #fff;
   }
   .source-line{
     margin-top: 12px;
     font-size: 10.5px;
-    color: var(--rsm-gray-mid);
+    color: var(--gray-mid);
   }
 
   /* ---------- BRIDGE ---------- */
@@ -155,89 +192,89 @@
   }
   .bridge-box{
     flex:1;
-    border: 1px solid var(--border);
+    background: var(--recessed);
+    border-radius: 10px;
     padding: 16px 18px;
     display:flex; flex-direction:column; gap:8px;
   }
-  .bridge-label{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--rsm-gray-mid); }
-  .bridge-number{ font-size:22px; font-weight:700; color:var(--rsm-navy); }
-  .bridge-op{ display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--rsm-gray-mid); width:20px; }
+  .bridge-label{ font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--gray-mid); }
+  .bridge-number{ font-size:22px; font-weight:700; color:var(--navy); }
+  .bridge-op{ display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--gray-mid); width:20px; }
   .bridge-box.emphasis{
     background: var(--blue-tint);
-    border-color: var(--rsm-blue);
   }
-  .bridge-box.emphasis .bridge-number{ font-size:34px; color: var(--rsm-blue); }
+  .bridge-box.emphasis .bridge-number{ font-size:34px; color: var(--blue); }
   .bridge-box .mini-slider{ margin-top:2px; }
   .bridge-explainer{
     margin: 18px 0 0 0;
     font-size: 12.5px;
     line-height:1.55;
-    color: var(--rsm-gray);
+    color: var(--gray);
     max-width: 760px;
   }
 
   /* ---------- EXPLAINER ---------- */
-  .explainer-card{
-    border: 1px solid var(--border);
-    padding: 18px 20px;
-  }
-  .explainer-title{ font-size:14px; font-weight:700; color:var(--rsm-navy); margin-bottom:8px; }
-  .explainer-card p{ font-size:12.5px; line-height:1.55; margin:0 0 10px 0; }
-  .explainer-card ul{ margin:0; padding-left:18px; }
-  .explainer-card li{ font-size:12.5px; line-height:1.6; margin-bottom:4px; }
+  .explainer-title{ font-size:14px; font-weight:600; color:var(--navy); margin-bottom:8px; }
+  .explainer p{ font-size:12.5px; line-height:1.55; margin:0 0 10px 0; }
+  .explainer ul{ margin:0; padding-left:18px; }
+  .explainer li{ font-size:12.5px; line-height:1.6; margin-bottom:4px; }
 
-  /* ---------- ONDERBOUWING (demoted) ---------- */
-  .onderbouwing-title{ font-size:12px; font-weight:700; color:var(--rsm-gray); text-transform:uppercase; letter-spacing:.05em; margin-bottom:6px; }
-  .onderbouwing-intro{ font-size:11.5px; color:var(--rsm-gray-mid); font-style:italic; margin:0 0 18px 0; max-width:700px; }
+  /* ---------- ONDERBOUWING ---------- */
+  .onderbouwing-intro{ font-size:11.5px; color:var(--gray-mid); font-style:italic; margin:0 0 18px 0; max-width:700px; }
+
+  .ob-panel{
+    background: var(--recessed);
+    border-radius: 10px;
+    padding: 22px;
+  }
   .ob-content{ display:flex; gap:28px; align-items:flex-start; }
   .ob-inputs{ flex: 0 0 300px; min-width:260px; }
   .ob-chart-area{ flex:1 1 auto; min-width:0; }
 
   .ob-base{ display:flex; gap:12px; margin-bottom:14px; }
-  .ob-field{ flex:1; border:1px solid var(--border); padding:8px 10px; }
-  .ob-field label{ display:block; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--rsm-gray-mid); margin-bottom:4px; }
+  .ob-field{ flex:1; background: var(--card-bg); border-radius: 8px; padding:8px 10px; }
+  .ob-field label{ display:block; font-size:9.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--gray-mid); margin-bottom:4px; }
   .ob-field .row{ display:flex; align-items:baseline; gap:3px; }
-  .ob-field .prefix{ font-size:12px; color:var(--rsm-gray-mid); }
-  .ob-field .readonly-val{ font-size:13px; color:var(--rsm-gray); font-weight:700; }
+  .ob-field .prefix{ font-size:12px; color:var(--gray-mid); }
+  .ob-field .readonly-val{ font-size:13px; color:var(--gray); font-weight:700; }
   .ob-field input[type=number]{
     width:100%; border:none; background:transparent;
-    font-size:13px; color:var(--rsm-gray); font-weight:700; padding:0;
+    font-size:13px; color:var(--gray); font-weight:700; padding:0;
   }
-  .ob-field input[type=number]:focus{ outline:1px solid var(--rsm-blue); }
+  .ob-field input[type=number]:focus{ outline:1px solid var(--blue); border-radius:3px; }
 
   .ob-cards{ display:flex; flex-direction:column; gap:8px; }
-  .ob-card{ border:1px solid var(--border); padding:9px 11px; }
+  .ob-card{ background: var(--card-bg); border-radius: 8px; padding:9px 11px; }
   .ob-card .head{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px; }
-  .ob-card .name{ font-size:11.5px; font-weight:700; color:var(--rsm-gray); }
-  .ob-card .basis{ font-size:9px; color:var(--rsm-gray-mid); border:1px solid var(--border); padding:1px 5px; }
+  .ob-card .name{ font-size:11.5px; font-weight:700; color:var(--gray); }
+  .ob-card .basis{ font-size:9px; color:var(--gray-mid); background: var(--recessed); border-radius:4px; padding:1px 5px; }
   .ob-card .inputs-row{ display:flex; gap:8px; }
   .ob-card .mini-field{ flex:1; }
-  .ob-card .mini-field label{ display:block; font-size:9px; color:var(--rsm-gray-mid); margin-bottom:2px; }
+  .ob-card .mini-field label{ display:block; font-size:9px; color:var(--gray-mid); margin-bottom:2px; }
   .ob-card .mini-field .row{ display:flex; align-items:baseline; }
   .ob-card input[type=number]{
-    width:100%; border:none; border-bottom:1px solid var(--rsm-gray-light);
-    background:transparent; font-size:12px; color:var(--rsm-gray); padding:2px 0;
+    width:100%; border:none;
+    background: var(--recessed); border-radius:5px;
+    font-size:12px; color:var(--gray); padding:3px 5px;
   }
-  .ob-card input[type=number]:focus{ outline:none; border-bottom-color: var(--rsm-blue); }
-  .ob-card .suffix{ font-size:11px; color:var(--rsm-gray-mid); margin-left:2px; }
+  .ob-card input[type=number]:focus{ outline:1px solid var(--blue); }
+  .ob-card .suffix{ font-size:11px; color:var(--gray-mid); margin-left:2px; }
 
-  .ob-caption{ font-size:11px; color:var(--rsm-gray-mid); margin:0 0 6px 2px; }
+  .ob-caption{ font-size:11px; color:var(--gray-mid); margin:0 0 6px 2px; }
   #chart{ width:100%; height:auto; display:block; }
 
   .commentary{
     font-size: 11.5px;
     font-style: italic;
-    color: var(--rsm-gray-mid);
+    color: var(--gray-mid);
     line-height: 1.5;
-    border-top: 1px solid var(--border);
-    padding-top: 10px;
-    margin-top: 10px;
+    margin-top: 14px;
   }
 
   footer{
-    padding: 16px 40px;
+    padding: 4px 24px 24px 24px;
     font-size: 9px;
-    color: var(--rsm-gray);
+    color: var(--gray);
   }
 
   @media (max-width: 760px){
@@ -247,94 +284,100 @@
     .bridge-op{ width:auto; padding:2px 0; }
     .ob-content{ flex-direction:column; }
     .ob-inputs{ flex:none; width:100%; }
+    .card{ padding: 24px 20px; }
   }
 </style>
 </head>
 <body>
-<div class="page">
 
-  <header>
-    <svg class="logo" viewBox="0 0 283.47 119.05" xmlns="http://www.w3.org/2000/svg">
-      <rect x="104.88" y="0" width="178.58" height="29.76" fill="#009CDE"/>
-      <rect x="0" y="0" width="22.68" height="29.76" fill="#888B8D"/>
-      <rect x="35.43" y="0" width="56.69" height="29.76" fill="#3F9C35"/>
-      <path d="M153.99 74.28C153.99 67.27 151.61 61.63 147.11 58.02 142.48 54.34 137.1 53.46 129.13 53.46L104.88 53.46 104.88 118.1 118.03 118.1 118.03 65.1 129.61 65.1C132.88 65.1 135.26 65.51 136.83 66.46 139.14 67.82 140.51 70.34 140.51 74.28 140.51 81.02 136.36 83.4 130.91 83.4L122.15 83.4 122.15 95.1 127.37 95.1 141.05 118.1 156.24 118.1 141.05 92.93C149.91 90.34 153.99 82.99 153.99 74.28Z" fill="#63666A"/>
-      <path d="M193.84 81.49C184.51 78.29 174.02 77.88 174.02 70.81 174.02 66.26 178.18 64.15 184.1 64.15 190.02 64.15 195.07 64.69 203.78 67.01L203.78 55.31C196.29 53.2 190.84 52.45 183.76 52.45 170.95 52.45 160.12 57.55 160.12 70.55 160.12 80.82 165.22 85.99 175.31 89.46 184.3 92.53 194.45 93.14 194.45 100.08 194.45 105.26 189.41 107.43 182.13 107.43 174.85 107.43 170.62 106.88 161.56 104.43L161.56 116.2C169.12 118.45 175.45 119.07 182.81 119.07 198.88 119.07 208.29 112.06 208.29 99.07 208.29 88.79 201.55 84.17 193.85 81.51Z" fill="#63666A"/>
-      <path d="M266.3 53.46 243.21 118.1 255.75 118.1 270.39 77 270.59 77 270.59 118.1 283.47 118.1 283.47 53.46 266.3 53.46Z" fill="#63666A"/>
-      <path d="M247.69 93.69 232.66 53.46 215.22 53.46 215.22 118.1 227.96 118.1 227.96 77 228.16 77 241.19 111.87 247.69 93.69Z" fill="#63666A"/>
-    </svg>
-    <div class="tag">Proof of concept v2 — interactieve waarderingstool</div>
-  </header>
+<div class="cover-band">
+  <div class="cover-inner">
+    <header>
+      <svg class="logo" viewBox="0 0 283.47 119.05" xmlns="http://www.w3.org/2000/svg">
+        <rect x="104.88" y="0" width="178.58" height="29.76" fill="#009CDE"/>
+        <rect x="0" y="0" width="22.68" height="29.76" fill="#888B8D"/>
+        <rect x="35.43" y="0" width="56.69" height="29.76" fill="#3F9C35"/>
+        <path d="M153.99 74.28C153.99 67.27 151.61 61.63 147.11 58.02 142.48 54.34 137.1 53.46 129.13 53.46L104.88 53.46 104.88 118.1 118.03 118.1 118.03 65.1 129.61 65.1C132.88 65.1 135.26 65.51 136.83 66.46 139.14 67.82 140.51 70.34 140.51 74.28 140.51 81.02 136.36 83.4 130.91 83.4L122.15 83.4 122.15 95.1 127.37 95.1 141.05 118.1 156.24 118.1 141.05 92.93C149.91 90.34 153.99 82.99 153.99 74.28Z" fill="#F3F5F8"/>
+        <path d="M193.84 81.49C184.51 78.29 174.02 77.88 174.02 70.81 174.02 66.26 178.18 64.15 184.1 64.15 190.02 64.15 195.07 64.69 203.78 67.01L203.78 55.31C196.29 53.2 190.84 52.45 183.76 52.45 170.95 52.45 160.12 57.55 160.12 70.55 160.12 80.82 165.22 85.99 175.31 89.46 184.3 92.53 194.45 93.14 194.45 100.08 194.45 105.26 189.41 107.43 182.13 107.43 174.85 107.43 170.62 106.88 161.56 104.43L161.56 116.2C169.12 118.45 175.45 119.07 182.81 119.07 198.88 119.07 208.29 112.06 208.29 99.07 208.29 88.79 201.55 84.17 193.85 81.51Z" fill="#F3F5F8"/>
+        <path d="M266.3 53.46 243.21 118.1 255.75 118.1 270.39 77 270.59 77 270.59 118.1 283.47 118.1 283.47 53.46 266.3 53.46Z" fill="#F3F5F8"/>
+        <path d="M247.69 93.69 232.66 53.46 215.22 53.46 215.22 118.1 227.96 118.1 227.96 77 228.16 77 241.19 111.87 247.69 93.69Z" fill="#F3F5F8"/>
+      </svg>
+      <div class="tag">Proof of concept v3 — interactieve waarderingstool</div>
+    </header>
 
-  <!-- ================= 1. HERO ================= -->
-  <section class="hero">
-    <div class="eyebrow">Indicatieve waardering</div>
-    <div class="hero-value">
-      <span class="hero-label">Enterprise Value</span>
-      <span class="num hero-number" id="evNumber">€0,0m</span>
-    </div>
+    <!-- ================= 1. HERO ================= -->
+    <section class="hero">
+      <div class="eyebrow">Indicatieve waardering</div>
+      <div class="hero-value">
+        <span class="hero-label">Enterprise Value</span>
+        <span class="num hero-number" id="evNumber">€0,0m</span>
+      </div>
 
-    <div class="sliders">
-      <div class="slider-block">
-        <div class="slider-label-row">
-          <label>Genormaliseerde EBITDA</label>
-          <span class="num slider-value" id="ebitdaVal">€0,0m</span>
+      <div class="sliders">
+        <div class="slider-block">
+          <div class="slider-label-row">
+            <label>Genormaliseerde EBITDA</label>
+            <span class="num slider-value" id="ebitdaVal">€0,0m</span>
+          </div>
+          <input type="range" id="ebitdaSlider" min="0.2" max="15" step="0.05" value="1.0">
+          <div class="slider-minmax"><span>€0,2m</span><span>€15,0m</span></div>
         </div>
-        <input type="range" id="ebitdaSlider" min="0.2" max="15" step="0.05" value="1.0">
-        <div class="slider-minmax"><span>€0,2m</span><span>€15,0m</span></div>
-      </div>
-      <div class="slider-block">
-        <div class="slider-label-row">
-          <label>Multiple</label>
-          <span class="num slider-value" id="multipleVal">0,0x</span>
+        <div class="slider-block">
+          <div class="slider-label-row">
+            <label>Multiple</label>
+            <span class="num slider-value" id="multipleVal">0,0x</span>
+          </div>
+          <input type="range" id="multipleSlider" min="1" max="12" step="0.1" value="5.0">
+          <div class="slider-minmax"><span>1,0x</span><span>12,0x</span></div>
         </div>
-        <input type="range" id="multipleSlider" min="1" max="12" step="0.1" value="5.0">
-        <div class="slider-minmax"><span>1,0x</span><span>12,0x</span></div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
+</div>
 
-  <!-- ================= 2. SECTOR + SCENARIO PRESETS ================= -->
-  <section class="scenario">
-    <div class="eyebrow">Scenario</div>
-    <div class="scenario-row">
-      <label for="sectorSelect">Sector</label>
-      <select id="sectorSelect"></select>
-    </div>
-    <div class="pills" role="group">
-      <button type="button" class="pill" data-preset="cons">Conservatief<span class="num pill-value" id="pillConsVal">–</span></button>
-      <button type="button" class="pill" data-preset="avg">Marktgemiddelde<span class="num pill-value" id="pillAvgVal">–</span></button>
-      <button type="button" class="pill" data-preset="opt">Optimistisch<span class="num pill-value" id="pillOptVal">–</span></button>
-    </div>
-    <div class="source-line" id="sourceLine">Bron: Brookz Overname Barometer H1 2026.</div>
-  </section>
+<div class="canvas">
+  <div class="cards-wrap">
 
-  <!-- ================= 3. VALUE BRIDGE ================= -->
-  <section class="bridge">
-    <div class="eyebrow">Van ondernemingswaarde naar waarde voor de aandeelhouder</div>
-    <div class="bridge-row">
-      <div class="bridge-box">
-        <div class="bridge-label">Enterprise Value</div>
-        <div class="num bridge-number" id="bridgeEV">€0,0m</div>
+    <!-- ================= 2. SECTOR + SCENARIO PRESETS ================= -->
+    <section class="card scenario">
+      <div class="eyebrow">Scenario</div>
+      <div class="scenario-row">
+        <label for="sectorSelect">Sector</label>
+        <select id="sectorSelect"></select>
       </div>
-      <div class="bridge-op">−</div>
-      <div class="bridge-box">
-        <div class="bridge-label">Netto schuld</div>
-        <div class="num bridge-number" id="netDebtVal">€0,0m</div>
-        <input class="mini-slider" type="range" id="netDebtSlider" min="-2" max="6" step="0.1" value="1.0">
+      <div class="pills" role="group">
+        <button type="button" class="pill" data-preset="cons">Conservatief<span class="num pill-value" id="pillConsVal">–</span></button>
+        <button type="button" class="pill" data-preset="avg">Marktgemiddelde<span class="num pill-value" id="pillAvgVal">–</span></button>
+        <button type="button" class="pill" data-preset="opt">Optimistisch<span class="num pill-value" id="pillOptVal">–</span></button>
       </div>
-      <div class="bridge-op">=</div>
-      <div class="bridge-box emphasis">
-        <div class="bridge-label">Equity Value</div>
-        <div class="num bridge-number" id="equityVal">€0,0m</div>
-      </div>
-    </div>
-    <p class="bridge-explainer">Enterprise Value is de waarde van de onderneming zelf, ongeacht hoe deze gefinancierd is. Equity Value is wat aandeelhouders overhouden na aftrek van de netto rentedragende schuld (negatief = netto kaspositie) — dit is het bedrag dat u bij verkoop daadwerkelijk ontvangt.</p>
-  </section>
+      <div class="source-line" id="sourceLine">Bron: Brookz Overname Barometer H1 2026.</div>
+    </section>
 
-  <!-- ================= 4. EXPLAINER ================= -->
-  <section class="explainer">
-    <div class="explainer-card">
+    <!-- ================= 3. VALUE BRIDGE ================= -->
+    <section class="card bridge">
+      <div class="eyebrow">Van ondernemingswaarde naar waarde voor de aandeelhouder</div>
+      <div class="bridge-row">
+        <div class="bridge-box">
+          <div class="bridge-label">Enterprise Value</div>
+          <div class="num bridge-number" id="bridgeEV">€0,0m</div>
+        </div>
+        <div class="bridge-op">−</div>
+        <div class="bridge-box">
+          <div class="bridge-label">Netto schuld</div>
+          <div class="num bridge-number" id="netDebtVal">€0,0m</div>
+          <input class="mini-slider" type="range" id="netDebtSlider" min="-2" max="6" step="0.1" value="1.0">
+        </div>
+        <div class="bridge-op">=</div>
+        <div class="bridge-box emphasis">
+          <div class="bridge-label">Equity Value</div>
+          <div class="num bridge-number" id="equityVal">€0,0m</div>
+        </div>
+      </div>
+      <p class="bridge-explainer">Enterprise Value is de waarde van de onderneming zelf, ongeacht hoe deze gefinancierd is. Equity Value is wat aandeelhouders overhouden na aftrek van de netto rentedragende schuld (negatief = netto kaspositie) — dit is het bedrag dat u bij verkoop daadwerkelijk ontvangt.</p>
+    </section>
+
+    <!-- ================= 4. EXPLAINER ================= -->
+    <section class="card explainer">
       <div class="explainer-title">Wat is genormaliseerde EBITDA?</div>
       <p>Genormaliseerde EBITDA is de operationele winst gecorrigeerd voor posten die geen goed beeld geven van de structurele verdiencapaciteit van de onderneming. Typische correcties zijn:</p>
       <ul>
@@ -342,69 +385,71 @@
         <li>Correctie voor eenmalige of incidentele baten en lasten (bijv. een schadevergoeding of reorganisatiekosten)</li>
         <li>Correctie voor niet-operationele of privégerelateerde kosten die via de onderneming lopen</li>
       </ul>
-    </div>
-  </section>
+    </section>
 
-  <!-- ================= 5. ONDERBOUWING ================= -->
-  <section class="onderbouwing">
-    <div class="onderbouwing-title">Onderbouwing</div>
-    <p class="onderbouwing-intro">Gedetailleerde onderbouwing van de kop­cijfers hierboven, op basis van vier waarderingsmethodieken.</p>
+    <!-- ================= 5. ONDERBOUWING ================= -->
+    <section class="card onderbouwing">
+      <div class="onderbouwing-title">Onderbouwing</div>
+      <p class="onderbouwing-intro">Gedetailleerde onderbouwing van de kop­cijfers hierboven, op basis van vier waarderingsmethodieken.</p>
 
-    <div class="ob-content">
-      <div class="ob-inputs">
-        <div class="ob-base">
-          <div class="ob-field">
-            <label>EBITDA (hero)</label>
-            <div class="row"><span class="prefix">€</span><span class="num readonly-val" id="obEbitda">0,0</span><span class="prefix">m</span></div>
-          </div>
-          <div class="ob-field">
-            <label>EBIT</label>
-            <div class="row"><span class="prefix">€</span><input type="number" id="ebit" value="0.8" step="0.1" min="0"><span class="prefix">m</span></div>
-          </div>
-        </div>
+      <div class="ob-panel">
+        <div class="ob-content">
+          <div class="ob-inputs">
+            <div class="ob-base">
+              <div class="ob-field">
+                <label>EBITDA (hero)</label>
+                <div class="row"><span class="prefix">€</span><span class="num readonly-val" id="obEbitda">0,0</span><span class="prefix">m</span></div>
+              </div>
+              <div class="ob-field">
+                <label>EBIT</label>
+                <div class="row"><span class="prefix">€</span><input type="number" id="ebit" value="0.8" step="0.1" min="0"><span class="prefix">m</span></div>
+              </div>
+            </div>
 
-        <div class="ob-cards">
-          <div class="ob-card">
-            <div class="head"><span class="name">CCA EV/EBIT</span><span class="basis">EBIT</span></div>
-            <div class="inputs-row">
-              <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cca_ebit_median" value="9.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
-              <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cca_ebit_range" value="1.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
+            <div class="ob-cards">
+              <div class="ob-card">
+                <div class="head"><span class="name">CCA EV/EBIT</span><span class="basis">EBIT</span></div>
+                <div class="inputs-row">
+                  <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cca_ebit_median" value="9.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
+                  <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cca_ebit_range" value="1.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
+                </div>
+              </div>
+              <div class="ob-card">
+                <div class="head"><span class="name">CCA EV/EBITDA</span><span class="basis">EBITDA</span></div>
+                <div class="inputs-row">
+                  <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cca_ebitda_median" value="7.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
+                  <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cca_ebitda_range" value="0.75" step="0.05" min="0"><span class="suffix">x</span></div></div>
+                </div>
+              </div>
+              <div class="ob-card">
+                <div class="head"><span class="name">CTA EV/EBIT</span><span class="basis">EBIT</span></div>
+                <div class="inputs-row">
+                  <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cta_ebit_median" value="8.5" step="0.1" min="0"><span class="suffix">x</span></div></div>
+                  <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cta_ebit_range" value="1.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
+                </div>
+              </div>
+              <div class="ob-card">
+                <div class="head"><span class="name">CTA EV/EBITDA</span><span class="basis">EBITDA</span></div>
+                <div class="inputs-row">
+                  <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cta_ebitda_median" value="6.5" step="0.1" min="0"><span class="suffix">x</span></div></div>
+                  <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cta_ebitda_range" value="0.75" step="0.05" min="0"><span class="suffix">x</span></div></div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="ob-card">
-            <div class="head"><span class="name">CCA EV/EBITDA</span><span class="basis">EBITDA</span></div>
-            <div class="inputs-row">
-              <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cca_ebitda_median" value="7.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
-              <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cca_ebitda_range" value="0.75" step="0.05" min="0"><span class="suffix">x</span></div></div>
-            </div>
-          </div>
-          <div class="ob-card">
-            <div class="head"><span class="name">CTA EV/EBIT</span><span class="basis">EBIT</span></div>
-            <div class="inputs-row">
-              <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cta_ebit_median" value="8.5" step="0.1" min="0"><span class="suffix">x</span></div></div>
-              <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cta_ebit_range" value="1.0" step="0.1" min="0"><span class="suffix">x</span></div></div>
-            </div>
-          </div>
-          <div class="ob-card">
-            <div class="head"><span class="name">CTA EV/EBITDA</span><span class="basis">EBITDA</span></div>
-            <div class="inputs-row">
-              <div class="mini-field"><label>Mediaan</label><div class="row"><input type="number" id="cta_ebitda_median" value="6.5" step="0.1" min="0"><span class="suffix">x</span></div></div>
-              <div class="mini-field"><label>Range (±)</label><div class="row"><input type="number" id="cta_ebitda_range" value="0.75" step="0.05" min="0"><span class="suffix">x</span></div></div>
-            </div>
+
+          <div class="ob-chart-area">
+            <div class="ob-caption">Enterprise Value Range per methodiek (€m)</div>
+            <svg id="chart" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg"></svg>
+            <p class="commentary">Een must-have koper zou zijn waardering verder kunnen stretchen op basis van synergiepotentieel, aanvullende <em>buy-and-build</em> strategie, multiple arbitrage en transactiestructurering.</p>
           </div>
         </div>
       </div>
+    </section>
 
-      <div class="ob-chart-area">
-        <div class="ob-caption">Enterprise Value Range per methodiek (€m)</div>
-        <svg id="chart" viewBox="0 0 900 340" xmlns="http://www.w3.org/2000/svg"></svg>
-        <p class="commentary">Een must-have koper zou zijn waardering verder kunnen stretchen op basis van synergiepotentieel, aanvullende <em>buy-and-build</em> strategie, multiple arbitrage en transactiestructurering.</p>
-      </div>
-    </div>
-  </section>
+    <footer>STRIKT PERSOONLIJK EN VERTROUWELIJK</footer>
 
-  <footer>STRIKT PERSOONLIJK EN VERTROUWELIJK</footer>
-
+  </div>
 </div>
 
 <script>
@@ -414,7 +459,8 @@
   const GRAY = "#63666A";
   const GRAY_MID = "#888B8D";
   const GRAY_LIGHT = "#CCCFCF";
-  const TRACK = "#E4E6E7";
+  const TRACK_LIGHT = "#E4E6E7";
+  const TRACK_DARK = "#24365A";
 
   function fmt(v, d){
     d = (d===undefined) ? 1 : d;
@@ -494,10 +540,10 @@
     sectorSelect.appendChild(o);
   });
 
-  function paintSlider(input){
+  function paintSlider(input, trackColor){
     const min = parseFloat(input.min), max = parseFloat(input.max), val = parseFloat(input.value);
     const pct = (val-min)/(max-min)*100;
-    input.style.background = `linear-gradient(to right, ${BLUE} 0%, ${BLUE} ${pct}%, ${TRACK} ${pct}%, ${TRACK} 100%)`;
+    input.style.background = `linear-gradient(to right, ${BLUE} 0%, ${BLUE} ${pct}%, ${trackColor} ${pct}%, ${trackColor} 100%)`;
   }
 
   function num(id){
@@ -608,7 +654,7 @@
 
     t.ticks.filter(v => v >= domainMin - 1e-9 && v <= domainMax + 1e-9).forEach(v => {
       const gx = x(v);
-      chart.appendChild(svgEl("line", { x1:gx, x2:gx, y1:8, y2:axisY, stroke:"#EDEEEE", "stroke-width":1 }));
+      chart.appendChild(svgEl("line", { x1:gx, x2:gx, y1:8, y2:axisY, stroke:"#E3E7EE", "stroke-width":1 }));
       const lbl = svgEl("text", { x:gx, y:axisY+16, "text-anchor":"middle", "font-size":10, fill:GRAY_MID });
       lbl.setAttribute("class","num");
       lbl.textContent = Math.round(v);
@@ -643,7 +689,7 @@
       const y = blendedTop;
       const x0 = x(blendedLow), x1 = x(blendedHigh);
 
-      chart.appendChild(svgEl("rect", { x:plotLeft-2, y:y-6, width:(plotRight-plotLeft)+2+64, height:blendedH+12, fill:"#F7F8F8" }));
+      chart.appendChild(svgEl("rect", { x:plotLeft-2, y:y-6, width:(plotRight-plotLeft)+2+64, height:blendedH+12, fill:"#FDFDFE" }));
 
       const label = svgEl("text", { x: plotLeft - 10, y: y + blendedH/2 + 4, "text-anchor":"end", "font-size":12, "font-weight":700, fill:NAVY });
       label.textContent = "Blended range";
@@ -674,9 +720,9 @@
     const multiple = num("multipleSlider");
     const netDebt = num("netDebtSlider");
 
-    paintSlider(ebitdaSlider);
-    paintSlider(multipleSlider);
-    paintSlider(netDebtSlider);
+    paintSlider(ebitdaSlider, TRACK_DARK);
+    paintSlider(multipleSlider, TRACK_DARK);
+    paintSlider(netDebtSlider, TRACK_LIGHT);
 
     // --- Hero ---
     const ev = ebitda * multiple;
