@@ -778,7 +778,7 @@
   // ---------------------------------------------------------------
   const SCENARIO_COLORS = { cons: GRAY, avg: BLUE, opt: GREEN };
 
-  function drawScenarioChart(ebitda, netDebt, sectorKey){
+  function drawScenarioChart(ebitda, netDebt, sectorKey, multiple){
     const chart = document.getElementById("scenarioChart");
     while(chart.firstChild) chart.removeChild(chart.firstChild);
 
@@ -791,11 +791,16 @@
     ].map(b => {
       const bucketEbitda = Math.max(0.01, ebitda * (1 + b.factor));
       const presets = computePresets(bucketEbitda, sectorKey);
+      const isCurrent = b.factor === 0;
       return {
         label: b.label,
-        isCurrent: b.factor === 0,
+        isCurrent: isCurrent,
         cons: bucketEbitda * presets.cons - netDebt,
-        avg:  bucketEbitda * presets.avg  - netDebt,
+        // "Huidig" must match the hero/bridge Equity Value exactly, so it
+        // uses the multiple slider's actual current value, not the sector
+        // preset average — the two can differ once the EBITDA slider moves
+        // without a pill re-click. Every other bucket keeps using the preset.
+        avg:  isCurrent ? (bucketEbitda * multiple - netDebt) : (bucketEbitda * presets.avg - netDebt),
         opt:  bucketEbitda * presets.opt  - netDebt
       };
     });
@@ -883,6 +888,9 @@
   // ---------------------------------------------------------------
 
   // Vervang door werkelijke cijfers per deal
+  // Intentionally NOT linked to the hero EBITDA slider: these are fixed, deal-specific
+  // historical actuals entered once, not a live figure — 2025 = 1.0 only coincides with
+  // the hero slider's default value, it does not track it.
   const HIST_ACTUAL = { 2023: 0.85, 2024: 0.95, 2025: 1.0 };
 
   // Groeiscenario's toegepast op het laatste werkelijke jaar — aanpasbaar per deal
@@ -1027,7 +1035,7 @@
     drawChart(methodologies, blendedLow, blendedHigh);
 
     // --- Waardescenario's ---
-    drawScenarioChart(ebitda, netDebt, sectorSelect.value);
+    drawScenarioChart(ebitda, netDebt, sectorSelect.value, multiple);
   }
 
   document.getElementById("growthConsVal").textContent = fmt(GROWTH_RATES.cons*100, 0) + "%";
