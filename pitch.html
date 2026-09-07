@@ -3,278 +3,365 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RSM Corporate Finance — Pitch</title>
+<title>RSM Corporate Finance — Discussiedocument</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* RSM brand colours — exact values, do not re-derive */
-    --navy:   #00153D;
-    --blue:   #009CDE;
-    --green:  #3F9C35;
-    --gray:   #63666A;
-    --gray-mid: #888B8D;
-    --gray-light: #CCCFCF;
+    /* RSM brand — exact values */
+    --navy:#00153D; --blue:#009CDE; --green:#3F9C35;
+    --gray:#63666A; --gray-mid:#888B8D; --gray-light:#CCCFCF;
 
-    --cover-bg: #0A1B33;
-    --text-light: #F3F5F8;
-    --text-light-secondary: #93A3BC;
+    /* document surfaces */
+    --cover:#0A1B33;
+    --cover-deep:#061225;
+    --ink-light:#F3F5F8;
+    --ink-light-2:#93A3BC;
+    --canvas:#EBEFF5;
+    --card:#FFFFFF;
+    --recessed:#F4F6FA;
+    --rule:#E4E9F0;
+    --rule-strong:#D3DAE6;
 
-    --canvas-bg: #EBEFF5;
-    --card-bg: #FDFDFE;
-    --recessed: #F2F4F9;
-    --blue-tint: #EAF6FC;
-    --card-shadow: 0 1px 2px rgba(10,27,51,0.05), 0 8px 24px rgba(10,27,51,0.05);
+    --shadow:0 1px 2px rgba(0,21,61,.04), 0 6px 20px rgba(0,21,61,.05);
+    --radius:6px;
+    --maxw:1080px;
   }
   *{box-sizing:border-box;}
-  html,body{
-    margin:0; padding:0;
-    background: var(--canvas-bg);
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
-    color: var(--gray);
-    scroll-behavior: smooth;
+  html{scroll-behavior:smooth; scroll-padding-top:64px;}
+  body{
+    margin:0; background:var(--canvas);
+    font-family:'Inter',Arial,Helvetica,sans-serif;
+    color:var(--gray);
+    font-size:12.5px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
   }
-  .num{
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-variant-numeric: tabular-nums;
-    font-feature-settings: "tnum" 1;
+  .num{ font-variant-numeric:tabular-nums; font-feature-settings:"tnum" 1; }
+
+  /* ---------- shared primitives ---------- */
+  .kicker{
+    font-size:9.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:8px;
   }
+  .rule{ height:1px; background:var(--rule); border:0; margin:0; }
 
-  /* =================== COVER BAND =================== */
-  .cover-band{ width:100%; background: var(--cover-bg); }
-  .cover-inner{ max-width:1048px; margin:0 auto; padding: 0 24px; }
+  /* brand bar motif, echoing the logo's three marks */
+  .brandbar{ display:flex; gap:3px; }
+  .brandbar i{ display:block; height:3px; width:14px; background:var(--gray-mid); }
+  .brandbar i:nth-child(2){ background:var(--green); }
+  .brandbar i:nth-child(3){ width:40px; background:var(--blue); }
 
+  /* ---------- sticky section nav ---------- */
+  .topbar{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    background:var(--cover);
+    transform:translateY(-100%); transition:transform .25s ease;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .topbar.visible{ transform:translateY(0); }
+  .topbar-inner{
+    max-width:var(--maxw); margin:0 auto; padding:0 32px;
+    height:52px; display:flex; align-items:center; gap:26px;
+  }
+  .topbar .mark{ height:16px; width:auto; flex:none; }
+  .topbar nav{ display:flex; gap:20px; overflow-x:auto; scrollbar-width:none; }
+  .topbar nav::-webkit-scrollbar{ display:none; }
+  .topbar a{
+    font-size:11px; font-weight:500; color:var(--ink-light-2);
+    text-decoration:none; white-space:nowrap; padding:4px 0;
+    border-bottom:2px solid transparent; transition:color .15s ease,border-color .15s ease;
+  }
+  .topbar a:hover{ color:var(--ink-light); }
+  .topbar a.active{ color:#fff; border-bottom-color:var(--blue); }
+  .topbar .conf{ margin-left:auto; flex:none; color:#5C7095; font-size:9px; letter-spacing:.12em; text-transform:uppercase; }
+
+  /* ---------- cover ---------- */
+  .cover{
+    background:
+      radial-gradient(120% 90% at 88% 12%, rgba(0,156,222,.14) 0%, rgba(0,156,222,0) 58%),
+      linear-gradient(180deg, var(--cover) 0%, var(--cover-deep) 100%);
+    color:var(--ink-light);
+  }
+  .cover-inner{ max-width:var(--maxw); margin:0 auto; padding:0 32px; }
   .cover-top{
-    display:flex; align-items:flex-start; justify-content:space-between;
-    padding: 22px 0 0 0; gap:20px;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:26px 0 0; gap:24px;
   }
-  .cover-conf{
-    font-size: 10px;
-    letter-spacing: .10em;
-    text-transform: uppercase;
-    color: var(--text-light-secondary);
-    font-weight: 600;
-  }
-  .cover-top .logo{ height: 26px; width:auto; display:block; flex:none; }
+  .cover-top .conf{ font-size:9.5px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-light-2); }
+  .cover-top .logo{ height:26px; width:auto; display:block; flex:none; }
 
-  .cover-body{ padding: 74px 0 78px 0; }
+  .cover-body{ padding:104px 0 96px; }
   .cover-eyebrow{
-    font-size: 12px; font-weight: 600; color: var(--blue);
-    margin-bottom: 14px; letter-spacing: .02em;
+    font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:22px;
   }
-  .cover-company{
-    font-size: 52px; font-weight: 700; color: var(--text-light);
-    line-height: 1.08; margin: 0 0 18px 0; letter-spacing: -0.01em;
+  .cover-name{
+    font-size:clamp(38px,5.6vw,62px); font-weight:700; line-height:1.04;
+    letter-spacing:-.025em; color:#fff; margin:0 0 26px; max-width:15ch;
   }
-  .cover-meta{
-    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-    font-size: 15px; color: var(--text-light-secondary);
-  }
-  .cover-meta .dot{ color:#3A4E70; }
+  .cover-body .brandbar{ margin-bottom:26px; }
+  .cover-sub{ font-size:16px; font-weight:500; color:var(--ink-light); margin-bottom:6px; }
+  .cover-date{ font-size:13px; color:var(--ink-light-2); }
 
-  /* =================== CANVAS + CARDS =================== */
-  .canvas{ padding: 26px 0 12px 0; }
-  .wrap{
-    max-width:1048px; margin:0 auto; padding: 0 24px 24px 24px;
-    display:flex; flex-direction:column; gap:20px;
-  }
-  .card{
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    padding: 28px 32px;
-  }
-  .eyebrow{
-    font-size: 13px; font-weight: 600; color: var(--gray-mid);
-    margin: 0 0 14px 0;
+  .cover-foot{
+    border-top:1px solid rgba(255,255,255,.09);
+    padding:16px 0 22px; display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap;
+    font-size:10px; color:#5C7095; letter-spacing:.04em;
   }
 
-  /* section headings */
-  .section-head{ padding: 14px 8px 0 8px; }
-  .section-num{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:26px; height:26px; border-radius:6px;
-    background: var(--navy); color:#fff;
-    font-size: 12.5px; font-weight:700; margin-right:10px;
-  }
-  .section-title{
-    display:flex; align-items:center;
-    font-size: 20px; font-weight: 700; color: var(--navy); margin: 0;
-  }
-  .section-sub{
-    font-size: 12.5px; color: var(--gray-mid); margin: 8px 0 0 36px; max-width: 720px; line-height:1.55;
-  }
-  .card-title{ font-size: 15px; font-weight: 700; color: var(--navy); margin: 0 0 4px 0; }
-  .card-lede{ font-size: 12.5px; color: var(--gray-mid); margin: 0 0 18px 0; line-height:1.55; max-width:760px; }
+  /* ---------- document body ---------- */
+  .doc{ max-width:var(--maxw); margin:0 auto; padding:36px 32px 20px; }
 
-  /* =================== TABLE OF CONTENTS =================== */
-  .toc-list{ display:flex; flex-direction:column; gap:2px; }
-  .toc-item{
-    display:flex; align-items:center; gap:14px;
-    padding: 11px 12px; border-radius: 8px;
-    text-decoration:none; color: var(--gray);
-    transition: background .12s ease;
+  /* chapter opener */
+  .chapter{ padding:26px 0 6px; }
+  .chapter-inner{ display:flex; align-items:baseline; gap:18px; }
+  .chapter-num{
+    font-size:34px; font-weight:700; line-height:1; color:var(--blue);
+    letter-spacing:-.02em; flex:none; font-variant-numeric:tabular-nums;
   }
-  .toc-item:hover{ background: var(--recessed); }
-  .toc-item .n{
-    width:24px; height:24px; border-radius:6px; flex:none;
-    display:flex; align-items:center; justify-content:center;
-    background: var(--recessed); color: var(--navy);
-    font-size: 11.5px; font-weight: 700;
+  .chapter-title{ font-size:23px; font-weight:700; color:var(--navy); letter-spacing:-.012em; margin:0; }
+  .chapter-desc{ margin:10px 0 0 52px; font-size:12.5px; color:var(--gray-mid); max-width:74ch; }
+  .chapter hr{ margin-top:16px; }
+
+  /* exhibit card */
+  .exhibit{
+    background:var(--card); border-radius:var(--radius); box-shadow:var(--shadow);
+    padding:26px 30px 22px; margin-bottom:18px;
   }
-  .toc-item:hover .n{ background: var(--blue); color:#fff; }
-  .toc-item .t{ font-size: 13.5px; font-weight: 600; color: var(--navy); }
-  .toc-item .d{ font-size: 11.5px; color: var(--gray-mid); margin-left:auto; }
+  .exhibit-head{ margin-bottom:16px; }
+  .exhibit-title{ font-size:16px; font-weight:700; color:var(--navy); letter-spacing:-.008em; margin:0 0 6px; line-height:1.4; }
+  .exhibit-lede{ font-size:12.5px; color:var(--gray); margin:0; max-width:88ch; }
+  .exhibit-head hr{ margin-top:16px; }
+  .exhibit-source{
+    margin-top:20px; padding-top:10px; border-top:1px solid var(--rule);
+    font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-light);
+  }
 
-  /* =================== 1a. DEAL TEAM =================== */
-  .team-layout{ display:flex; gap:20px; align-items:stretch; }
-  .team-main{ flex: 1 1 auto; min-width:0; display:flex; gap:20px; }
-  .team-side{ flex: 0 0 232px; display:flex; flex-direction:column; gap:12px; }
+  /* ---------- table of contents ---------- */
+  .toc a{
+    display:grid; grid-template-columns:30px 1fr auto; align-items:center; gap:16px;
+    padding:13px 10px; text-decoration:none; border-bottom:1px solid var(--rule);
+    transition:background .12s ease;
+  }
+  .toc a:last-child{ border-bottom:0; }
+  .toc a:hover{ background:var(--recessed); }
+  .toc .n{ font-size:12px; font-weight:700; color:var(--blue); font-variant-numeric:tabular-nums; }
+  .toc .t{ font-size:14px; font-weight:600; color:var(--navy); }
+  .toc .d{ font-size:11px; color:var(--gray-mid); text-align:right; }
+  .toc a:hover .t{ color:var(--blue); }
 
+  /* ---------- deal team ---------- */
+  .team-grid{ display:grid; grid-template-columns:1fr 268px; gap:26px; align-items:start; }
+  .team-member{ display:flex; gap:20px; }
+  .team-member + .team-member{ margin-top:22px; padding-top:22px; border-top:1px solid var(--rule); }
   .photo-ph{
-    flex:none; width:118px; height:142px; border-radius:10px;
-    background: var(--recessed);
-    display:flex; align-items:center; justify-content:center; text-align:center;
-    font-size: 9.5px; color: var(--gray-mid); padding: 8px; line-height:1.4;
-  }
-  .team-info{ flex:1 1 auto; min-width:0; }
-  .team-name{ font-size: 18px; font-weight: 700; color: var(--navy); margin-bottom:2px; }
-  .team-role{ font-size: 12.5px; color: var(--blue); font-weight: 600; margin-bottom:12px; }
-  .team-contact{ display:flex; flex-direction:column; gap:4px; margin-bottom:14px; }
-  .team-contact span{ font-size: 11.5px; color: var(--gray); }
-  .team-contact .lbl{ color: var(--gray-mid); display:inline-block; width:64px; }
-  .team-bio{ margin:0; padding-left:16px; }
-  .team-bio li{ font-size: 12px; line-height:1.6; color: var(--gray); margin-bottom:5px; }
-
-  .deal-box{
-    background: var(--recessed); border-radius:10px; padding: 14px;
-    display:flex; flex-direction:column; gap:6px; text-align:center;
-  }
-  .deal-box .logo-ph{
-    height: 44px; border-radius:6px; background:#fff;
+    flex:none; width:124px; height:155px; border-radius:4px;
+    background:var(--recessed); border:1px solid var(--rule);
     display:flex; align-items:center; justify-content:center;
-    font-size: 11.5px; font-weight:700; color: var(--navy);
+    font-size:9px; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-light);
   }
-  .deal-box .act{ font-size: 10px; color: var(--gray-mid); }
-  .deal-box .rsm{ font-size: 9.5px; font-weight:700; color: var(--blue); letter-spacing:.02em; }
+  .team-info{ min-width:0; }
+  .team-name{ font-size:17px; font-weight:700; color:var(--navy); letter-spacing:-.01em; }
+  .team-role{ font-size:12px; font-weight:600; color:var(--blue); margin-top:2px; }
+  .team-contact{ margin:12px 0 14px; display:grid; grid-template-columns:auto 1fr; gap:3px 14px; }
+  .team-contact .lbl{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--gray-light); padding-top:1px; }
+  .team-contact .val{ font-size:11.5px; color:var(--gray); }
+  .team-bio{ list-style:none; margin:0; padding:0; }
+  .team-bio li{ position:relative; padding-left:14px; font-size:11.5px; line-height:1.62; margin-bottom:7px; }
+  .team-bio li::before{
+    content:""; position:absolute; left:0; top:8px;
+    width:4px; height:4px; background:var(--blue); border-radius:50%;
+  }
+  .team-missing{ font-size:11.5px; color:#B00020; }
 
-  /* =================== 1b. SERVICES WHEEL =================== */
-  .wheel-layout{ display:flex; gap:26px; align-items:center; }
-  .wheel-svg{ flex: 0 0 400px; }
+  .team-aside{ display:flex; flex-direction:column; gap:12px; }
+  .team-stats{ display:flex; flex-direction:column; gap:12px; }
+  .stat-mini{ background:var(--recessed); border-radius:4px; padding:14px 16px; }
+  .stat-mini .v{ font-size:28px; font-weight:700; color:var(--navy); line-height:1; letter-spacing:-.02em; }
+  .stat-mini .l{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-mid); margin-top:7px; }
+  .award{ border:1px solid var(--rule-strong); border-radius:4px; padding:14px 16px; }
+  .award .a1{ font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue); margin-bottom:7px; }
+  .award .a2{ font-size:10.5px; line-height:1.5; color:var(--gray); }
+  .award .a3{ font-size:10px; font-weight:600; color:var(--navy); margin-top:7px; }
+
+  /* differentiators */
+  .diff-strip{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px; }
+  .diff-tile{ background:var(--recessed); border-radius:4px; padding:16px 18px; }
+  .diff-icon{ margin-bottom:10px; line-height:0; }
+  .diff-tile .h{ font-size:12.5px; font-weight:600; color:var(--navy); line-height:1.45; }
+
+  /* ---------- services ---------- */
+  .wheel-grid{ display:grid; grid-template-columns:392px 1fr; gap:28px; align-items:center; }
   #servicesWheel{ width:100%; height:auto; display:block; }
-  .svc-cards{ flex:1 1 auto; display:grid; grid-template-columns: 1fr 1fr; gap:10px; min-width:0; }
-  .svc-card{ background: var(--recessed); border-radius:10px; padding: 12px 14px; }
-  .svc-card h4{ font-size: 12.5px; font-weight:700; color: var(--navy); margin:0 0 6px 0; }
-  .svc-card ul{ margin:0; padding-left:15px; }
-  .svc-card li{ font-size: 10.5px; line-height:1.5; color: var(--gray); margin-bottom:2px; }
+  .svc-cards{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  /* an odd final card spans the full width instead of leaving a gap */
+  .svc-cards > :last-child:nth-child(odd){ grid-column:1 / -1; }
+  .svc-card{ border:1px solid var(--rule); border-radius:4px; padding:13px 15px; }
+  .svc-card h4{ font-size:12px; font-weight:700; margin:0 0 8px; letter-spacing:.01em; }
+  .svc-card ul{ margin:0; padding-left:14px; }
+  .svc-card li{ font-size:10.5px; line-height:1.55; color:var(--gray); margin-bottom:3px; }
 
-  .diff-strip{ display:flex; gap:12px; margin-top:22px; }
-  .diff-tile{ flex:1; background: var(--blue-tint); border-radius:10px; padding: 14px 16px; }
-  .diff-tile .h{ font-size: 12.5px; font-weight:700; color: var(--navy); margin-bottom:5px; }
-  .diff-tile .p{ font-size: 11px; line-height:1.5; color: var(--gray); }
-
-  /* =================== 1c. FOOTPRINT =================== */
-  .fp-layout{ display:flex; gap:28px; align-items:flex-start; }
-  .fp-map{ flex: 0 0 260px; }
+  /* ---------- footprint ---------- */
+  .fp-grid{ display:grid; grid-template-columns:250px 1fr; gap:32px; align-items:start; }
   #nlMap{ width:100%; height:auto; display:block; }
-  .fp-right{ flex:1 1 auto; min-width:0; }
-  .stat-row{ display:flex; gap:12px; margin-bottom:18px; }
-  .stat-tile{ flex:1; background: var(--recessed); border-radius:10px; padding: 16px 18px; }
-  .stat-tile .v{ font-size: 26px; font-weight:700; color: var(--navy); line-height:1; margin-bottom:6px; }
-  .stat-tile .l{ font-size: 10.5px; color: var(--gray-mid); text-transform:uppercase; letter-spacing:.04em; }
-  .focus-list{ display:flex; flex-direction:column; gap:8px; }
-  .focus-row{ display:flex; gap:12px; align-items:baseline; font-size:12px; }
-  .focus-row .k{ flex:0 0 150px; color: var(--gray-mid); }
-  .focus-row .v{ color: var(--navy); font-weight:600; }
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:22px; }
+  .stat-tile{ border-bottom:2px solid var(--blue); padding:0 0 12px; }
+  .stat-tile .v{ font-size:32px; font-weight:700; color:var(--navy); line-height:1; letter-spacing:-.025em; }
+  .stat-tile .l{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-mid); margin-top:8px; }
+  .facts{ display:grid; gap:0; }
+  .fact{ display:grid; grid-template-columns:190px 1fr; gap:16px; padding:9px 0; border-bottom:1px solid var(--rule); }
+  .fact:last-child{ border-bottom:0; }
+  .fact .k{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:var(--gray-mid); }
+  .fact .v{ font-size:12px; color:var(--navy); font-weight:500; }
 
-  /* =================== 1d. TRACK RECORD =================== */
-  .tr-grid{ display:grid; grid-template-columns: repeat(5, 1fr); gap:10px; }
-  .tr-tile{
-    background: var(--recessed); border-radius:10px; padding: 12px 10px;
-    display:flex; flex-direction:column; gap:6px; text-align:center; align-items:center;
+  /* ---------- tombstones ---------- */
+  .tomb-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(186px,1fr)); gap:12px; }
+  .tomb{
+    border:1px solid var(--rule-strong); border-radius:4px; background:var(--card);
+    padding:14px 12px 10px; display:flex; flex-direction:column; align-items:center;
+    text-align:center; min-height:178px;
   }
-  .tr-tile .co{
-    width:100%; height:36px; border-radius:6px; background:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-size: 10.5px; font-weight:700; color: var(--navy); padding: 0 6px;
+  .tomb .sector{ font-size:8px; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-light); margin-bottom:10px; }
+  /* the transaction block centres itself so parties line up across the grid */
+  .tomb-body{ flex:1; display:flex; flex-direction:column; justify-content:center; width:100%; }
+  .tomb .party{ font-size:13px; font-weight:700; color:var(--navy); letter-spacing:.01em; line-height:1.25; }
+  .tomb .act{ font-size:9.5px; line-height:1.5; color:var(--gray-mid); margin:9px 0; font-style:italic; }
+  .tomb .status{
+    display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.1em;
+    color:var(--blue); border:1px solid var(--blue); border-radius:3px; padding:3px 9px;
   }
-  .tr-tile .act{ font-size: 9.5px; color: var(--gray-mid); line-height:1.4; }
-  .tr-tile .cp{ font-size: 10.5px; font-weight:600; color: var(--gray); }
-  .tr-tile .rsm{ font-size: 8.5px; font-weight:700; color: var(--blue); margin-top:auto; }
-
-  /* =================== 1e. CASE STUDY =================== */
-  .cs-top{ display:flex; gap:22px; align-items:flex-start; margin-bottom:20px; }
-  .cs-col{ flex:1; min-width:0; }
-  .cs-h{ font-size: 12px; font-weight:700; color: var(--navy); margin-bottom:8px; }
-  .cs-col ul{ margin:0; padding-left:16px; }
-  .cs-col li{ font-size: 11.5px; line-height:1.6; color: var(--gray); margin-bottom:5px; }
-
-  .phases{ display:flex; gap:8px; align-items:stretch; margin-bottom:20px; }
-  .phase{
-    flex:1; background: var(--recessed); border-radius:10px; padding: 12px 14px;
-    display:flex; flex-direction:column; gap:5px;
-  }
-  .phase .pn{
-    width:20px; height:20px; border-radius:5px; background: var(--blue); color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-size: 10.5px; font-weight:700;
-  }
-  .phase .pt{ font-size: 12px; font-weight:700; color: var(--navy); }
-  .phase .pd{ font-size: 10.5px; line-height:1.45; color: var(--gray); }
-  .phase-arrow{ display:flex; align-items:center; color: var(--gray-light); font-size:16px; }
-
-  .metric-row{ display:flex; gap:12px; }
-  .metric{ flex:1; background: var(--blue-tint); border-radius:10px; padding: 14px 16px; }
-  .metric .v{ font-size: 22px; font-weight:700; color: var(--blue); line-height:1; margin-bottom:5px; }
-  .metric .l{ font-size: 10.5px; color: var(--gray-mid); text-transform:uppercase; letter-spacing:.04em; }
-
-  /* =================== STUB SECTIONS =================== */
-  .stub{
-    background: var(--recessed); border-radius:10px; padding: 26px;
-    text-align:center; font-size: 12px; color: var(--gray-mid);
+  .tomb .foot{
+    margin-top:auto; padding-top:10px; width:100%; border-top:1px solid var(--rule);
+    font-size:7.5px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; color:var(--blue);
   }
 
-  /* =================== FOOTERS =================== */
-  .section-footer{
-    font-size: 9px; color: var(--gray-mid);
-    padding: 2px 8px 8px 8px; letter-spacing:.02em;
+  /* ---------- case study ---------- */
+  .cs-banner{
+    background:var(--navy); color:#fff; border-radius:4px;
+    padding:14px 18px; font-size:12.5px; font-weight:500; line-height:1.5; margin-bottom:20px;
   }
-  .legal{
-    max-width:1048px; margin:0 auto; padding: 18px 32px 40px 32px;
-    font-size: 9px; line-height:1.7; color: var(--gray-mid);
+  .cs-cols{ display:grid; grid-template-columns:1fr 1fr; gap:30px; margin-bottom:24px; }
+  .cs-h{
+    font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--navy); padding-bottom:7px; border-bottom:1px solid var(--rule-strong); margin-bottom:11px;
   }
-  .legal .addr{ margin-bottom:8px; color: var(--gray); }
+  .cs-list{ list-style:none; margin:0; padding:0; }
+  .cs-list li{ position:relative; padding-left:14px; font-size:11.5px; line-height:1.6; margin-bottom:8px; }
+  .cs-list li::before{ content:""; position:absolute; left:0; top:8px; width:6px; height:1.5px; background:var(--blue); }
 
-  .back-top{
-    display:inline-block; margin-top:4px;
-    font-size: 11px; color: var(--blue); text-decoration:none; font-weight:600;
+  .process{ position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:24px; }
+  .process::before{
+    content:""; position:absolute; left:14px; right:14px; top:14px; height:1px; background:var(--rule-strong);
   }
-  .back-top:hover{ text-decoration:underline; }
+  .step{ position:relative; }
+  .step-num{
+    position:relative; width:28px; height:28px; border-radius:50%;
+    background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center;
+    font-size:11.5px; font-weight:700; margin-bottom:11px;
+    box-shadow:0 0 0 5px var(--card);
+  }
+  .step-t{ font-size:12px; font-weight:700; color:var(--navy); margin-bottom:7px; }
+  .step ul{ list-style:none; margin:0; padding:0; }
+  .step li{ position:relative; padding-left:11px; font-size:10.5px; line-height:1.55; margin-bottom:5px; color:var(--gray); }
+  .step li::before{ content:""; position:absolute; left:0; top:8px; width:4px; height:1px; background:var(--gray-light); }
 
-  @media (max-width: 860px){
-    .cover-company{ font-size: 36px; }
-    .team-layout, .team-main, .wheel-layout, .fp-layout, .cs-top{ flex-direction:column; }
-    .team-side, .wheel-svg, .fp-map{ flex:none; width:100%; }
-    .svc-cards{ grid-template-columns: 1fr; }
-    .diff-strip, .stat-row, .metric-row, .phases{ flex-direction:column; }
-    .phase-arrow{ display:none; }
-    .tr-grid{ grid-template-columns: repeat(2, 1fr); }
-    .card{ padding: 24px 20px; }
+  .metric-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+  .metric{ background:var(--recessed); border-radius:4px; padding:15px 17px; }
+  .metric .v{ font-size:24px; font-weight:700; color:var(--blue); line-height:1; letter-spacing:-.02em; }
+  .metric .l{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-mid); margin-top:8px; }
+
+  /* ---------- forthcoming sections ---------- */
+  .planned{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(228px,1fr)); gap:1px;
+    background:var(--rule); border:1px solid var(--rule); border-radius:4px; overflow:hidden;
+  }
+  .planned div{ background:var(--card); padding:13px 15px; font-size:11.5px; color:var(--gray); }
+  .planned div span{ display:block; font-size:9px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-light); margin-bottom:5px; }
+  .forthcoming{
+    display:inline-flex; align-items:center; gap:8px; margin-top:16px;
+    font-size:9.5px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gray-mid);
+  }
+  .forthcoming::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--gray-light); }
+
+  /* ---------- footers ---------- */
+  .doc-footer{
+    display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    padding:6px 4px 24px; font-size:9px; letter-spacing:.06em; color:var(--gray-mid);
+  }
+  .legal{ background:var(--navy); color:#8FA1BE; }
+  .legal-inner{ max-width:var(--maxw); margin:0 auto; padding:30px 32px 40px; }
+  .legal .brandbar{ margin-bottom:18px; }
+  .legal .addr{ color:#D8DFEA; font-size:10.5px; margin-bottom:12px; }
+  .legal .fine{ font-size:9px; line-height:1.8; max-width:110ch; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .team-grid,.wheel-grid,.fp-grid,.cs-cols{ grid-template-columns:1fr; }
+    .process{ grid-template-columns:repeat(2,1fr); }
+    .process::before{ display:none; }
+    .diff-strip{ grid-template-columns:1fr; }
+    .metric-row,.stat-row{ grid-template-columns:repeat(2,1fr); }
+    .svc-cards{ grid-template-columns:1fr; }
+  }
+  @media (max-width:640px){
+    .doc{ padding:26px 18px 16px; }
+    .cover-inner,.legal-inner,.topbar-inner{ padding-left:18px; padding-right:18px; }
+    .exhibit{ padding:22px 18px 18px; }
+    .cover-body{ padding:64px 0 56px; }
+    .team-member{ flex-direction:column; }
+    .toc a{ grid-template-columns:26px 1fr; }
+    .toc .d{ display:none; }
+    .metric-row,.stat-row,.process{ grid-template-columns:1fr; }
+    .fact{ grid-template-columns:1fr; gap:2px; }
+    .chapter-desc{ margin-left:0; }
+  }
+
+  /* ---------- print / PDF ---------- */
+  @media print{
+    body{ background:#fff; }
+    .topbar{ display:none; }
+    .cover{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .exhibit{ box-shadow:none; border:1px solid var(--rule); break-inside:avoid; page-break-inside:avoid; }
+    .chapter{ break-before:page; page-break-before:always; }
+    .legal{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   }
 </style>
 </head>
 <body>
 
+<!-- ---------- sticky section nav ---------- -->
+<div class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <svg class="mark" viewBox="0 0 283.47 119.05" xmlns="http://www.w3.org/2000/svg" aria-label="RSM">
+      <rect x="104.88" y="0" width="178.58" height="29.76" fill="#009CDE"/>
+      <rect x="0" y="0" width="22.68" height="29.76" fill="#888B8D"/>
+      <rect x="35.43" y="0" width="56.69" height="29.76" fill="#3F9C35"/>
+      <path d="M153.99 74.28C153.99 67.27 151.61 61.63 147.11 58.02 142.48 54.34 137.1 53.46 129.13 53.46L104.88 53.46 104.88 118.1 118.03 118.1 118.03 65.1 129.61 65.1C132.88 65.1 135.26 65.51 136.83 66.46 139.14 67.82 140.51 70.34 140.51 74.28 140.51 81.02 136.36 83.4 130.91 83.4L122.15 83.4 122.15 95.1 127.37 95.1 141.05 118.1 156.24 118.1 141.05 92.93C149.91 90.34 153.99 82.99 153.99 74.28Z" fill="#FFFFFF"/>
+      <path d="M193.84 81.49C184.51 78.29 174.02 77.88 174.02 70.81 174.02 66.26 178.18 64.15 184.1 64.15 190.02 64.15 195.07 64.69 203.78 67.01L203.78 55.31C196.29 53.2 190.84 52.45 183.76 52.45 170.95 52.45 160.12 57.55 160.12 70.55 160.12 80.82 165.22 85.99 175.31 89.46 184.3 92.53 194.45 93.14 194.45 100.08 194.45 105.26 189.41 107.43 182.13 107.43 174.85 107.43 170.62 106.88 161.56 104.43L161.56 116.2C169.12 118.45 175.45 119.07 182.81 119.07 198.88 119.07 208.29 112.06 208.29 99.07 208.29 88.79 201.55 84.17 193.85 81.51Z" fill="#FFFFFF"/>
+      <path d="M266.3 53.46 243.21 118.1 255.75 118.1 270.39 77 270.59 77 270.59 118.1 283.47 118.1 283.47 53.46 266.3 53.46Z" fill="#FFFFFF"/>
+      <path d="M247.69 93.69 232.66 53.46 215.22 53.46 215.22 118.1 227.96 118.1 227.96 77 228.16 77 241.19 111.87 247.69 93.69Z" fill="#FFFFFF"/>
+    </svg>
+    <nav id="topnav">
+      <a href="#sectie-1">1 · Introductie RSM</a>
+      <a href="#sectie-2">2 · Ons begrip</a>
+      <a href="#sectie-3">3 · Markt &amp; M&amp;A</a>
+      <a href="#sectie-4">4 · Waardering</a>
+      <a href="#sectie-5">5 · Verkoopproces</a>
+      <a href="#sectie-6">6 · Bijlagen</a>
+    </nav>
+    <div class="conf">Vertrouwelijk</div>
+  </div>
+</div>
+
 <!-- ============================================================
-     SECTION 0 — COVER (DEAL-driven)
+     COVER (DEAL-driven)
      ============================================================ -->
-<div class="cover-band" id="cover">
+<header class="cover" id="cover">
   <div class="cover-inner">
     <div class="cover-top">
-      <div class="cover-conf">Strikt persoonlijk en vertrouwelijk</div>
-      <svg class="logo" viewBox="0 0 283.47 119.05" xmlns="http://www.w3.org/2000/svg">
-        <!-- icon mark keeps brand colours; wordmark recoloured white for the dark cover -->
+      <div class="conf">Strikt persoonlijk en vertrouwelijk</div>
+      <svg class="logo" viewBox="0 0 283.47 119.05" xmlns="http://www.w3.org/2000/svg" aria-label="RSM">
         <rect x="104.88" y="0" width="178.58" height="29.76" fill="#009CDE"/>
         <rect x="0" y="0" width="22.68" height="29.76" fill="#888B8D"/>
         <rect x="35.43" y="0" width="56.69" height="29.76" fill="#3F9C35"/>
@@ -286,347 +373,488 @@
     </div>
 
     <div class="cover-body">
-      <div class="cover-eyebrow">RSM Corporate Finance</div>
-      <h1 class="cover-company" data-deal="companyName">[Bedrijfsnaam]</h1>
-      <div class="cover-meta">
-        <span data-deal="pitchTitle">[Pitchtitel]</span>
-        <span class="dot">|</span>
-        <span data-deal="date">[Datum]</span>
-      </div>
+      <div class="cover-eyebrow">Discussiedocument · RSM Corporate Finance</div>
+      <h1 class="cover-name" data-deal="companyName">[Bedrijfsnaam]</h1>
+      <div class="brandbar"><i></i><i></i><i></i></div>
+      <div class="cover-sub" data-deal="pitchTitle">[Pitchtitel]</div>
+      <div class="cover-date" data-deal="date">[Datum]</div>
+    </div>
+
+    <div class="cover-foot">
+      <span>RSM Netherlands Corporate Finance B.V.</span>
+      <span>Oorsprongpark 12, 3581 ET Utrecht</span>
+      <span>www.rsmnl.com</span>
     </div>
   </div>
-</div>
+</header>
 
-<div class="canvas">
-  <div class="wrap">
+<main class="doc">
 
-    <!-- ============================================================
-         TABLE OF CONTENTS — replaces the deck's six repeated "Inhoud" slides
-         ============================================================ -->
-    <section class="card" id="inhoud">
-      <div class="eyebrow">Inhoud</div>
-      <nav class="toc-list">
-        <a class="toc-item" href="#sectie-1"><span class="n">1</span><span class="t">Introductie RSM</span><span class="d">Team, dienstverlening, track record</span></a>
-        <a class="toc-item" href="#sectie-2"><span class="n">2</span><span class="t">Ons begrip van <span data-deal="companyName">[Bedrijfsnaam]</span></span><span class="d">Propositie en positionering</span></a>
-        <a class="toc-item" href="#sectie-3"><span class="n">3</span><span class="t">Marktontwikkelingen en M&amp;A omgeving</span><span class="d">Sector- en transactiedynamiek</span></a>
-        <a class="toc-item" href="#sectie-4"><span class="n">4</span><span class="t">Waardering en rendement</span><span class="d">Indicatieve waardering</span></a>
-        <a class="toc-item" href="#sectie-5"><span class="n">5</span><span class="t">Indicatief verkoopproces</span><span class="d">Fasering en tijdlijn</span></a>
-        <a class="toc-item" href="#sectie-6"><span class="n">6</span><span class="t">Bijlagen</span><span class="d">Achtergrond en documentatie</span></a>
-      </nav>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- ============================================================
-         SECTION 1 — INTRODUCTIE RSM
-         ============================================================ -->
-    <div class="section-head" id="sectie-1">
-      <h2 class="section-title"><span class="section-num">1</span>Introductie RSM</h2>
-      <p class="section-sub">Wie wij zijn, hoe ons geïntegreerde M&amp;A-team werkt, en wat wij eerder hebben gerealiseerd voor ondernemers in de Nederlandse mid-market.</p>
+  <!-- ---------- table of contents ---------- -->
+  <section class="exhibit" id="inhoud">
+    <div class="exhibit-head">
+      <div class="kicker">Inhoud</div>
+      <h2 class="exhibit-title">Opbouw van dit document</h2>
+      <hr class="rule">
     </div>
+    <nav class="toc">
+      <a href="#sectie-1"><span class="n">01</span><span class="t">Introductie RSM</span><span class="d">Team, dienstverlening en track record</span></a>
+      <a href="#sectie-2"><span class="n">02</span><span class="t">Ons begrip van <span data-deal="companyName">[Bedrijfsnaam]</span></span><span class="d">Propositie, financiën en marktpositie</span></a>
+      <a href="#sectie-3"><span class="n">03</span><span class="t">Marktontwikkelingen en M&amp;A omgeving</span><span class="d">Sectortrends en transactiedynamiek</span></a>
+      <a href="#sectie-4"><span class="n">04</span><span class="t">Waardering en rendement</span><span class="d">Kopersuniversum en indicatieve waardering</span></a>
+      <a href="#sectie-5"><span class="n">05</span><span class="t">Indicatief verkoopproces</span><span class="d">Fasering, deliverables en tijdlijn</span></a>
+      <a href="#sectie-6"><span class="n">06</span><span class="t">Bijlagen</span><span class="d">Casestudies en marktreferenties</span></a>
+    </nav>
+  </section>
 
-    <!-- 1a. Deal team (DEAL-driven) + firm track record highlight boxes (fixed) -->
-    <section class="card">
-      <div class="card-title">Uw aanspreekpunt bij RSM Corporate Finance</div>
-      <p class="card-lede">Directe betrokkenheid van senior professionals in elke fase van de transactie, van initiële analyse tot closing.</p>
-
-      <div class="team-layout">
-        <div class="team-main">
-          <div class="photo-ph" id="teamPhoto">Foto</div>
-          <div class="team-info">
-            <div class="team-name" id="teamName">[Naam]</div>
-            <div class="team-role" id="teamTitle">[Functie] | Corporate Finance</div>
-            <div class="team-contact">
-              <span><span class="lbl">Locatie</span><span id="teamLocation">[Stad], Nederland</span></span>
-              <span><span class="lbl">Telefoon</span><span class="num" id="teamPhone">[Telefoonnummer]</span></span>
-              <span><span class="lbl">E-mail</span><span id="teamEmail">[Email]</span></span>
-            </div>
-            <ul class="team-bio" id="teamBio"></ul>
-          </div>
-        </div>
-        <!-- Firm track record, not tied to the individual above — editable, but not part of DEAL -->
-        <div class="team-side" id="teamSideDeals"></div>
-      </div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- 1b. Integrated services wheel + differentiators -->
-    <section class="card">
-      <div class="card-title">RSM biedt een volledige reeks geïntegreerde M&amp;A-diensten</div>
-      <p class="card-lede">Eén geïntegreerd team met alle relevante expertise in huis, waardoor wij snel schakelen en pragmatische ondersteuning leveren gedurende het gehele transactieproces.</p>
-
-      <div class="wheel-layout">
-        <div class="wheel-svg"><svg id="servicesWheel" viewBox="0 0 460 400" xmlns="http://www.w3.org/2000/svg"></svg></div>
-        <div class="svc-cards" id="svcCards"></div>
-      </div>
-
-      <div class="diff-strip" id="diffStrip"></div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- 1c. Firm footprint -->
-    <section class="card">
-      <div class="card-title">RSM in Nederland</div>
-      <p class="card-lede">Een toegewijd Corporate Finance team, ondersteund door het landelijke RSM-netwerk en directe toegang tot RSM International.</p>
-
-      <div class="fp-layout">
-        <div class="fp-map"><svg id="nlMap" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg"></svg></div>
-        <div class="fp-right">
-          <div class="stat-row" id="statRow"></div>
-          <div class="focus-list" id="focusList"></div>
-        </div>
-      </div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- 1d. Track record wall -->
-    <section class="card">
-      <div class="card-title">Een sterk en bewezen track record</div>
-      <p class="card-lede">Een selectie van recent afgeronde transacties binnen onze M&amp;A-praktijk.</p>
-      <div class="tr-grid" id="trackRecord"></div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- 1e. Case study -->
-    <section class="card">
-      <div class="card-title" id="csTitle">Casestudy</div>
-      <p class="card-lede" id="csLede"></p>
-
-      <div class="cs-top">
-        <div class="cs-col">
-          <div class="cs-h">Situatie</div>
-          <ul id="csSituation"></ul>
-        </div>
-        <div class="cs-col">
-          <div class="cs-h">Uitdagingen en toegevoegde waarde RSM</div>
-          <ul id="csValue"></ul>
-        </div>
-      </div>
-
-      <div class="cs-h">Scope van werkzaamheden RSM Corporate Finance</div>
-      <div class="phases" id="csPhases"></div>
-
-      <div class="cs-h">Kerncijfers en feiten</div>
-      <div class="metric-row" id="csMetrics"></div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- ============================================================
-         SECTION 2 — ONS BEGRIP VAN [COMPANY]
-         ============================================================ -->
-    <div class="section-head" id="sectie-2">
-      <h2 class="section-title"><span class="section-num">2</span><span>Ons begrip van <span data-deal="companyName">[Bedrijfsnaam]</span></span></h2>
+  <!-- ============================================================
+       1 — INTRODUCTIE RSM
+       ============================================================ -->
+  <div class="chapter" id="sectie-1">
+    <div class="chapter-inner">
+      <span class="chapter-num">01</span>
+      <h2 class="chapter-title">Introductie RSM</h2>
     </div>
-    <section class="card">
-      <!-- TODO: built in a later prompt -->
-      <div class="stub">Sectie 2 — nog te bouwen<br><a class="back-top" href="#inhoud">Terug naar inhoud</a></div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- ============================================================
-         SECTION 3 — MARKTONTWIKKELINGEN EN M&A OMGEVING
-         ============================================================ -->
-    <div class="section-head" id="sectie-3">
-      <h2 class="section-title"><span class="section-num">3</span>Marktontwikkelingen en M&amp;A omgeving</h2>
-    </div>
-    <section class="card">
-      <!-- TODO: built in a later prompt -->
-      <div class="stub">Sectie 3 — nog te bouwen<br><a class="back-top" href="#inhoud">Terug naar inhoud</a></div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- ============================================================
-         SECTION 4 — WAARDERING EN RENDEMENT
-         valuation-slide.html wordt hier later ingebed
-         ============================================================ -->
-    <div class="section-head" id="sectie-4">
-      <h2 class="section-title"><span class="section-num">4</span>Waardering en rendement</h2>
-    </div>
-    <section class="card">
-      <!-- TODO: built in a later prompt — embed valuation-slide.html here -->
-      <div class="stub">Sectie 4 — interactieve waardering (valuation-slide.html) wordt hier ingebed<br><a class="back-top" href="#inhoud">Terug naar inhoud</a></div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- ============================================================
-         SECTION 5 — INDICATIEF VERKOOPPROCES
-         ============================================================ -->
-    <div class="section-head" id="sectie-5">
-      <h2 class="section-title"><span class="section-num">5</span>Indicatief verkoopproces</h2>
-    </div>
-    <section class="card">
-      <!-- TODO: built in a later prompt -->
-      <div class="stub">Sectie 5 — nog te bouwen<br><a class="back-top" href="#inhoud">Terug naar inhoud</a></div>
-      <div class="section-footer"></div>
-    </section>
-
-    <!-- ============================================================
-         SECTION 6 — BIJLAGEN
-         ============================================================ -->
-    <div class="section-head" id="sectie-6">
-      <h2 class="section-title"><span class="section-num">6</span>Bijlagen</h2>
-    </div>
-    <section class="card">
-      <!-- TODO: built in a later prompt -->
-      <div class="stub">Sectie 6 — nog te bouwen<br><a class="back-top" href="#inhoud">Terug naar inhoud</a></div>
-      <div class="section-footer"></div>
-    </section>
-
+    <p class="chapter-desc">Wie u aan tafel krijgt, hoe ons geïntegreerde M&amp;A-team is opgebouwd, en wat wij eerder hebben gerealiseerd voor ondernemers in de Nederlandse mid-market.</p>
+    <hr class="rule">
   </div>
-</div>
 
-<!-- Legal footer — fixed RSM entity text, identical on every deal -->
-<div class="legal">
-  <div class="addr">
-    RSM Netherlands Corporate Finance B.V. &nbsp;|&nbsp; Oorsprongpark 12, 3581 ET Utrecht, The Netherlands
-    &nbsp;|&nbsp; T +31 (0) 30 231 73 44 &nbsp;|&nbsp; www.rsmnl.com
+  <!-- 1a — deal team -->
+  <article class="exhibit">
+    <div class="exhibit-head">
+      <div class="kicker" data-exhibit></div>
+      <h3 class="exhibit-title">Uw aanspreekpunt bij RSM Corporate Finance</h3>
+      <p class="exhibit-lede">Directe betrokkenheid van senior professionals in elke fase van de transactie, van initiële analyse tot closing.</p>
+      <hr class="rule">
+    </div>
+    <div class="team-grid">
+      <div id="dealTeamCards"></div>
+      <aside class="team-aside">
+        <div class="team-stats" id="teamStats"></div>
+        <div class="award" id="awardBox"></div>
+      </aside>
+    </div>
+    <div class="diff-strip" id="diffStrip"></div>
+    <div class="exhibit-source">Bron: RSM Netherlands Corporate Finance</div>
+  </article>
+
+  <!-- 1b — integrated services -->
+  <article class="exhibit">
+    <div class="exhibit-head">
+      <div class="kicker" data-exhibit></div>
+      <h3 class="exhibit-title">Een volledige reeks geïntegreerde M&amp;A-diensten</h3>
+      <p class="exhibit-lede">Eén geïntegreerd team met alle relevante expertise in huis. Daardoor schakelen wij snel en leveren wij pragmatische ondersteuning gedurende het gehele transactieproces, zonder afhankelijkheid van externe partijen.</p>
+      <hr class="rule">
+    </div>
+    <div class="wheel-grid">
+      <div><svg id="servicesWheel" viewBox="0 0 460 400" xmlns="http://www.w3.org/2000/svg"></svg></div>
+      <div class="svc-cards" id="svcCards"></div>
+    </div>
+    <div class="exhibit-source">Bron: RSM M&amp;A Services</div>
+  </article>
+
+  <!-- 1c — footprint -->
+  <article class="exhibit">
+    <div class="exhibit-head">
+      <div class="kicker" data-exhibit></div>
+      <h3 class="exhibit-title">RSM in Nederland</h3>
+      <p class="exhibit-lede">Een toegewijd Corporate Finance team, ondersteund door het landelijke RSM-netwerk en met directe toegang tot RSM International.</p>
+      <hr class="rule">
+    </div>
+    <div class="fp-grid">
+      <div><svg id="nlMap" viewBox="0 0 240 280" xmlns="http://www.w3.org/2000/svg"></svg></div>
+      <div>
+        <div class="stat-row" id="statRow"></div>
+        <div class="facts" id="focusList"></div>
+      </div>
+    </div>
+    <div class="exhibit-source">Bron: RSM Netherlands — kerncijfers worden jaarlijks geactualiseerd</div>
+  </article>
+
+  <!-- 1d — tombstones -->
+  <article class="exhibit">
+    <div class="exhibit-head">
+      <div class="kicker" data-exhibit></div>
+      <h3 class="exhibit-title">Een sterk en bewezen track record</h3>
+      <p class="exhibit-lede">Een selectie van recent afgeronde transacties binnen onze M&amp;A-praktijk, geselecteerd op relevantie voor uw sector.</p>
+      <hr class="rule">
+    </div>
+    <div class="tomb-grid" id="trackRecord"></div>
+    <div class="exhibit-source">Bron: RSM Corporate Finance transactieoverzicht</div>
+  </article>
+
+  <!-- 1e — case study (optional per deal) -->
+  <article class="exhibit" id="caseStudyCard">
+    <div class="exhibit-head">
+      <div class="kicker" data-exhibit></div>
+      <h3 class="exhibit-title" id="csTitle"></h3>
+      <hr class="rule">
+    </div>
+    <div class="cs-banner" id="csBanner"></div>
+    <div class="cs-cols">
+      <div>
+        <div class="cs-h">Situatie</div>
+        <ul class="cs-list" id="csSituation"></ul>
+      </div>
+      <div>
+        <div class="cs-h">Toegevoegde waarde RSM Corporate Finance</div>
+        <ul class="cs-list" id="csValue"></ul>
+      </div>
+    </div>
+    <div class="cs-h">Scope van werkzaamheden</div>
+    <div class="process" id="csPhases"></div>
+    <div class="cs-h">Kerncijfers en feiten</div>
+    <div class="metric-row" id="csMetrics"></div>
+    <div class="exhibit-source">Bron: RSM Corporate Finance</div>
+  </article>
+
+  <!-- ============================================================
+       2 — ONS BEGRIP VAN [COMPANY]
+       ============================================================ -->
+  <div class="chapter" id="sectie-2">
+    <div class="chapter-inner">
+      <span class="chapter-num">02</span>
+      <h2 class="chapter-title">Ons begrip van <span data-deal="companyName">[Bedrijfsnaam]</span></h2>
+    </div>
+    <hr class="rule">
   </div>
-  © 2026 RSM, all rights reserved. RSM Netherlands Corporate Finance B.V. is a member of the RSM network and trades as RSM.
-  RSM is the trading name used by the members of the RSM network. Each member of the RSM network is an independent accounting
-  and consulting firm which practices in its own right. The RSM network is not itself a separate legal entity in any jurisdiction.
-  All assignments are subject to our general terms and conditions, these can be sent on request free of charge.
-  RSM Netherlands Corporate Finance B.V. is registered at the Chamber of Commerce under number 16065031.
-</div>
+  <article class="exhibit">
+    <!-- TODO: built in a later prompt -->
+    <div class="exhibit-head">
+      <h3 class="exhibit-title">Geplande onderwerpen</h3>
+      <p class="exhibit-lede">Deze sectie beschrijft de onderneming zoals wij haar op dit moment begrijpen, en wordt per traject opgesteld op basis van de aangeleverde informatie.</p>
+      <hr class="rule">
+    </div>
+    <div class="planned">
+      <div><span>2.1</span>Beschrijving, juridische structuur en activiteiten</div>
+      <div><span>2.2</span>Producten, diensten en klantsegmenten</div>
+      <div><span>2.3</span>Financiële ontwikkeling: omzet, brutowinst en EBITDA</div>
+      <div><span>2.4</span>Vrije kasstromen en werkkapitaal</div>
+      <div><span>2.5</span>Marktpositie en onderscheidend vermogen</div>
+    </div>
+    <div class="forthcoming">In voorbereiding</div>
+  </article>
+
+  <!-- ============================================================
+       3 — MARKTONTWIKKELINGEN EN M&A OMGEVING
+       ============================================================ -->
+  <div class="chapter" id="sectie-3">
+    <div class="chapter-inner">
+      <span class="chapter-num">03</span>
+      <h2 class="chapter-title">Marktontwikkelingen en M&amp;A omgeving</h2>
+    </div>
+    <hr class="rule">
+  </div>
+  <article class="exhibit">
+    <!-- TODO: built in a later prompt -->
+    <div class="exhibit-head">
+      <h3 class="exhibit-title">Geplande onderwerpen</h3>
+      <p class="exhibit-lede">Sectorcontext en transactiedynamiek, onderbouwd met marktdata en recente vergelijkbare transacties.</p>
+      <hr class="rule">
+    </div>
+    <div class="planned">
+      <div><span>3.1</span>Trends en groeiverwachting in de sector</div>
+      <div><span>3.2</span>Marktomvang, segmentatie en BBP-gevoeligheid</div>
+      <div><span>3.3</span>Consolidatie en actieve kopersgroepen</div>
+      <div><span>3.4</span>Uitdagingen: materiaalprijzen en arbeidsmarkt</div>
+      <div><span>3.5</span>Overzicht van relevante M&amp;A transacties</div>
+    </div>
+    <div class="forthcoming">In voorbereiding</div>
+  </article>
+
+  <!-- ============================================================
+       4 — WAARDERING EN RENDEMENT
+       ============================================================ -->
+  <div class="chapter" id="sectie-4">
+    <div class="chapter-inner">
+      <span class="chapter-num">04</span>
+      <h2 class="chapter-title">Waardering en rendement</h2>
+    </div>
+    <hr class="rule">
+  </div>
+  <article class="exhibit">
+    <!-- TODO: built in a later prompt — embed valuation-slide.html here -->
+    <div class="exhibit-head">
+      <h3 class="exhibit-title">Geplande onderwerpen</h3>
+      <p class="exhibit-lede">De interactieve waarderingstool (valuation-slide.html) wordt in deze sectie ingebed, met daaromheen het kopersuniversum en de structureringsopties.</p>
+      <hr class="rule">
+    </div>
+    <div class="planned">
+      <div><span>4.1</span>Potentiële strategische en financiële kopers</div>
+      <div><span>4.2</span>Family offices en private equity</div>
+      <div><span>4.3</span>Indicatieve waardering — interactief model</div>
+      <div><span>4.4</span>M&amp;A opties: volledige verkoop versus pre-exit</div>
+      <div><span>4.5</span>Schematisch overzicht pre-exit structuur</div>
+    </div>
+    <div class="forthcoming">In voorbereiding</div>
+  </article>
+
+  <!-- ============================================================
+       5 — INDICATIEF VERKOOPPROCES
+       ============================================================ -->
+  <div class="chapter" id="sectie-5">
+    <div class="chapter-inner">
+      <span class="chapter-num">05</span>
+      <h2 class="chapter-title">Indicatief verkoopproces</h2>
+    </div>
+    <hr class="rule">
+  </div>
+  <article class="exhibit">
+    <!-- TODO: built in a later prompt -->
+    <div class="exhibit-head">
+      <h3 class="exhibit-title">Geplande onderwerpen</h3>
+      <p class="exhibit-lede">Een gecontroleerd proces met een goede voorbereiding leidt tot een optimaal transactieresultaat.</p>
+      <hr class="rule">
+    </div>
+    <div class="planned">
+      <div><span>5.1</span>RSM sell-side services en projectmanagement</div>
+      <div><span>5.2</span>Verkoopdocumentatie en verhaallijn</div>
+      <div><span>5.3</span>Voorbereiding, NBO, due diligence en SPA</div>
+      <div><span>5.4</span>Virtual data room en managementpresentatie</div>
+      <div><span>5.5</span>Indicatieve doorlooptijd per fase</div>
+    </div>
+    <div class="forthcoming">In voorbereiding</div>
+  </article>
+
+  <!-- ============================================================
+       6 — BIJLAGEN
+       ============================================================ -->
+  <div class="chapter" id="sectie-6">
+    <div class="chapter-inner">
+      <span class="chapter-num">06</span>
+      <h2 class="chapter-title">Bijlagen</h2>
+    </div>
+    <hr class="rule">
+  </div>
+  <article class="exhibit">
+    <!-- TODO: built in a later prompt -->
+    <div class="exhibit-head">
+      <h3 class="exhibit-title">Geplande onderwerpen</h3>
+      <p class="exhibit-lede">Aanvullende referenties en marktdata ter onderbouwing van de voorgaande secties.</p>
+      <hr class="rule">
+    </div>
+    <div class="planned">
+      <div><span>6.1</span>Aanvullende casestudies</div>
+      <div><span>6.2</span>M&amp;A readiness review</div>
+      <div><span>6.3</span>Vendor due diligence</div>
+      <div><span>6.4</span>Beursgenoteerde vergelijkbare ondernemingen</div>
+      <div><span>6.5</span>Recente transacties in de sector</div>
+      <div><span>6.6</span>Brookz Overname Barometer</div>
+    </div>
+    <div class="forthcoming">In voorbereiding</div>
+  </article>
+
+  <div class="doc-footer">
+    <span data-deal="companyName">[Bedrijfsnaam]</span>
+    <span data-deal="pitchTitle">[Pitchtitel]</span>
+    <span>STRIKT PERSOONLIJK EN VERTROUWELIJK</span>
+  </div>
+</main>
+
+<!-- ---------- legal footer (fixed, identical on every deal) ---------- -->
+<footer class="legal">
+  <div class="legal-inner">
+    <div class="brandbar"><i></i><i></i><i></i></div>
+    <div class="addr">
+      RSM Netherlands Corporate Finance B.V. &nbsp;·&nbsp; Oorsprongpark 12, 3581 ET Utrecht, The Netherlands
+      &nbsp;·&nbsp; T +31 (0) 30 231 73 44 &nbsp;·&nbsp; www.rsmnl.com
+    </div>
+    <div class="fine">
+      © 2026 RSM, all rights reserved. RSM Netherlands Corporate Finance B.V. is a member of the RSM network and trades as RSM.
+      RSM is the trading name used by the members of the RSM network. Each member of the RSM network is an independent accounting
+      and consulting firm which practices in its own right. The RSM network is not itself a separate legal entity in any jurisdiction.
+      All assignments are subject to our general terms and conditions, these can be sent on request free of charge.
+      RSM Netherlands Corporate Finance B.V. is registered at the Chamber of Commerce under number 16065031.
+    </div>
+  </div>
+</footer>
 
 <script>
 // ============================================================
-// DEAL CONFIG — edit this block for each new pitch. Nothing
-// below the RSM FIXED CONTENT marker should need to change.
+// RSM_FIXED_DATA — RSM's permanent content. Update this when the FIRM
+// changes (a new colleague, a new tombstone, the annual statistics),
+// never for an individual pitch. DEAL below references entries here by
+// id, so preparing a new deal means "pick from this list", not
+// "retype a bio".
+// ============================================================
+const RSM_FIXED_DATA = {
+
+  // --- Corporate Finance team roster (real people, real bios) ---
+  // Add every real CF team member here over time.
+  // DEAL.dealTeamIds selects 1-3 by id for the deal team card.
+  teamRoster: {
+    "mikel-hoppenbrouwers": {
+      name: "Mikel Hoppenbrouwers",
+      title: "Director | Corporate Finance",
+      location: "Utrecht, Nederland",
+      phone: "+31 (0)6 82 01 21 87",
+      email: "MHoppenbrouwers@rsmnl.nl",
+      photoPath: "[pad naar foto]",
+      bio: [
+        "Mikel heeft meer dan 12 jaar ervaring in het begeleiden van transacties. Hij begon als Corporate Finance Consultant bij Deloitte en werkte daarna als Corporate Development Manager bij een private-equity portfolio-bedrijf met een wereldwijde dekking en een focus op buy-and-build",
+        "Sinds 2023 is Mikel werkzaam bij RSM als Director Corporate Finance, waar hij verantwoordelijk is voor de aansturing van het Corporate Finance team",
+        "Mikel staat bekend om zijn pragmatische en hands-on aanpak"
+      ]
+    }
+    // "add-second-team-member": { ...same shape... },
+    // "add-third-team-member": { ...same shape... },
+  },
+
+  // --- Firm-wide annual stats (update ~yearly, not per deal) ---
+  firmStats: {
+    transactionsThisYear: 74,
+    transactionsYear: 2025,
+    maProfessionals: 38,
+    awardLine1: "LEADING M&A ADVISORY FIRM",
+    awardLine2: "RSM M&A Services heeft van Consultancy.nl de platinum status ontvangen als toonaangevend M&A-adviesbureau",
+    awardLine3: "De Beste M&A Adviesbureaus van Nederland 2025",
+    nlProfessionals: 700,
+    nlOffices: 7,
+    nlPartners: 21,
+    officeCities: ["Alkmaar", "Amsterdam", "Hoofddorp", "Utrecht", "Rotterdam", "Eindhoven", "Heerlen"]
+  },
+
+  // --- Differentiator tiles (deal team exhibit) ---
+  // icon: "award" | "people" | "gear" — matches the reference deck's icon style
+  differentiatorTiles: [
+    { title: "Leidend M&A huis met bewezen track record", icon: "award" },
+    { title: "Senior executie-team en hands-on transactiebegeleiding", icon: "people" },
+    { title: "Geïntegreerd team met relevante in-house expertise", icon: "gear" }
+  ],
+
+  // --- Tombstone library (master list) ---
+  // DEAL.tombstoneIds selects a subset, chosen for relevance to the
+  // target's sector. counterparty: null + status renders as a status chip.
+  tombstones: [
+    { id: "innodak-dakaccent", ourClient: "Innodak", action: "in het aangaan van een strategische samenwerking met", counterparty: "DAKaccent", sector: "dakbedekking" },
+    { id: "sempergreen-msq", ourClient: "sempergreen", action: "in het aangaan van een strategische samenwerking met", counterparty: "msq", sector: "groendaken" },
+    { id: "lc-batenburg", ourClient: "LC", action: "bij de verkoop aan", counterparty: "batenburg", sector: "techniek" },
+    { id: "blygold-gilde", ourClient: "Blygold", action: "in het aangaan van een strategische samenwerking met", counterparty: "Gilde Equity Management", sector: "coating/corrosion" },
+    { id: "jaga-vybros", ourClient: "jaga", action: "in het aangaan van een strategische samenwerking met", counterparty: "Vybros Capital Partners", sector: "klimaat" },
+    { id: "glaszetter-pending", ourClient: "Een gerenommeerd glaszettersbedrijf", action: "bij een mogelijke verkoop", counterparty: null, status: "PENDING", sector: "glaszetten" },
+    { id: "ppc-newport", ourClient: "PPC", action: "in het aangaan van een strategische samenwerking met", counterparty: "Newport Capital", sector: "parket" },
+    { id: "lotec-vdk", ourClient: "LOTEC", action: "bij de verkoop aan", counterparty: "VDK", sector: "techniek" },
+    { id: "sustainablebuildings-fudura", ourClient: "Sustainable Buildings", action: "in de verkoop van een minderheidsaandeel aan", counterparty: "fudura", sector: "duurzaamheid" },
+    { id: "vlac-hsb", ourClient: "Vlac", action: "in de verkoop aan", counterparty: "HSB", sector: "installatietechniek" }
+  ],
+
+  // --- Case study library (optional per deal) ---
+  caseStudies: {
+    "innodak-dakaccent": {
+      title: "RSM M&A Services trad op als adviseur van de aandeelhouders van Innodak bij de verkoop aan DakAccent (portfoliobedrijf Foreman)",
+      situatie: [
+        "Innodak is een gevestigde Nederlandse B2B-dakenspecialist met een historie sinds 1933, een hoofdvestiging in Boxtel en een aanvullende vestiging in Amsterdam voor verdere dekking richting de Randstad",
+        "De onderneming is gespecialiseerd in dakrenovatie en nieuwbouw, dakveiligheid, duurzame daken en onderhoud & inspectie, waarbij Innodak volledige projecten verzorgt van advies tot uitvoering",
+        "Innodak onderscheidt zich door een sterke focus op kwaliteit, veiligheid en duurzaamheid, ondersteund door relevante certificeringen en samenwerkingen",
+        "De onderneming bedient een loyaal en zakelijk klantenbestand, waaronder gemeenten, vastgoedbeheerders, zorginstellingen en grotere zakelijke klanten, met een belangrijke rol voor meerjarige onderhouds- en servicecontracten",
+        "De aandeelhouders zochten een strategische partner die kon bijdragen aan de volgende groeifase, waaronder verdere uitbouw van de Randstad-positie, versterking bij bestaande klanten en mogelijke buy-and-build kansen"
+      ],
+      scope: [
+        { phase: "Voorbereiding", items: ["Analyseren van (financiële) informatie en voorbereiden van verkoopdocumentatie (o.a. IM, teaser, kandidaat-koperslijst, etc.)", "Opstellen kandidaat-koperslijst en bepalen van de verkoopstrategie"] },
+        { phase: "Non-binding offer (NBO)", items: ["Analyseren van ontvangen NBO's", "Uitonderhandelen NBO's richting 'principeakkoord'"] },
+        { phase: "Due Diligence & SPA", items: ["Coördinatie Due Diligence", "Aanspreekpunt voor de adviseur van kandidaat-koper", "Uitonderhandelen van SPA/SHA"] },
+        { phase: "Closing", items: ["Afstemming met juridische en fiscale adviseurs DakAccent", "Ondersteuning richting afronding en closing van de transactie"] }
+      ],
+      toegevoegdeWaarde: [
+        "RSM CF ondersteunde bij het opzetten van een vaststellingsovereenkomst tussen de aandeelhouders, waarmee de onderlinge verhoudingen voorafgaand aan de verkoop werden afgestemd en de basis werd gelegd voor een gezamenlijk verkooptraject",
+        "RSM CF positioneerde Innodak als een kwalitatief hoogwaardige B2B-dakenspecialist met sterke klantrelaties, terugkerende service-inkomsten en aantrekkelijke groeimogelijkheden, wat heeft bijgedragen aan competitieve spanning in het proces",
+        "RSM CF begeleidde de onderhandelingen over de earn-out structuur en zorgde voor heldere afspraken over de voorwaarden en berekeningsmethodiek, waardoor het risico op discussies na closing werd beperkt",
+        "RSM CF ondersteunde bij de overdracht van materiële vaste activa naar de persoonlijke holdings van de verkopers, zonder impact op de ondernemingswaarde of de overeengekomen transactievoorwaarden"
+      ],
+      kerncijfers: { omzet: "€4,2m", ebitda: "€840k", medewerkers: "12", jaarErvaring: "90+" },
+      banner: "Een optimaal competitief transactieproces wordt gegarandeerd door de \"full-service M&A-ondersteuning\" van RSM"
+    }
+    // more case studies can be added here over time
+  },
+
+  // --- Services wheel content ---
+  // NOTE: the spec for this block was truncated in the brief; the content
+  // below is taken verbatim from the source template deck (slide 14) and
+  // should be replaced if a different version is intended.
+  servicesWheel: [
+    { key:"cf",  short:"Corporate\nFinance",    label:"Corporate Finance", color:"#009CDE", items:[
+        "Buy-side advies", "Sell-side advies", "Fusiebegeleiding", "M&A strategie ontwikkeling", "M&A target search" ] },
+    { key:"val", short:"Valuations",            label:"Valuations", color:"#00153D", items:[
+        "Bedrijfswaardering", "Financieel modelleren", "Purchase Price Allocation (PPA)", "Fairness opinions", "Portefeuille-/fondswaarderingen" ] },
+    { key:"ts",  short:"Transaction\nServices", label:"Transaction Services", color:"#3F9C35", items:[
+        "Financieel due diligence", "Vendor transaction services", "Buy- & sell-side advies" ] },
+    { key:"tax", short:"M&A Tax",               label:"M&A Tax", color:"#63666A", items:[
+        "Buy-side & vendor tax due diligence", "SPA-ondersteuning", "Pre- en post-deal (her)structurering", "Fiscale integratie" ] },
+    { key:"da",  short:"Debt\nAdvisory",        label:"Debt Advisory", color:"#888B8D", items:[
+        "Structureren van financieringsbehoefte", "Assisteren bij herfinanciering", "CAPEX financiering", "M&A financiering" ] }
+  ],
+
+  // --- CF focus profile (update annually, not per deal) ---
+  focusProfile: [
+    { k:"Markt",            v:"Nederlandse MKB(+) markt" },
+    { k:"EBITDA",           v:"€0,5m – €5,0m" },
+    { k:"Enterprise Value", v:"€5,0m – €30,0m" },
+    { k:"Sectorfocus",      v:"Facilitaire diensten, logistiek, productie, zorg, IT en e-commerce" }
+  ],
+
+  // --- Stylised NL map: coordinates per city, and which cities host CF ---
+  // firmStats.officeCities drives which cities are plotted.
+  mapCoords: {
+    "Alkmaar":   { x:74,  y:86  },
+    "Amsterdam": { x:92,  y:104 },
+    "Hoofddorp": { x:70,  y:118 },
+    "Utrecht":   { x:106, y:126 },
+    "Rotterdam": { x:74,  y:146 },
+    "Eindhoven": { x:120, y:184 },
+    "Heerlen":   { x:146, y:214 }
+  },
+  cfOfficeCities: ["Amsterdam", "Utrecht"]
+};
+// ============================================================
+// END RSM_FIXED_DATA
+// ============================================================
+
+
+// ============================================================
+// DEAL CONFIG — edit this block for each new pitch. Everything here
+// is either deal-specific text, or picks entries from RSM_FIXED_DATA
+// by id. Nothing above this block should need to change per deal.
 // ============================================================
 const DEAL = {
   companyName: "[Bedrijfsnaam]",
   pitchTitle: "Kennismaking RSM Corporate Finance",
   date: "[Datum]",
-  dealTeam: {
-    name: "[Naam]",
-    title: "[Functie] | Corporate Finance",
-    location: "[Stad], Nederland",
-    phone: "[Telefoonnummer]",
-    email: "[Email]",
-    photoNote: "// vervang met echte foto per deal",
-    bio: [
-      "[Ervaringsregel 1]",
-      "[Ervaringsregel 2]",
-      "[Ervaringsregel 3]"
-    ]
-  }
+
+  // Pick 1-3 ids from RSM_FIXED_DATA.teamRoster
+  dealTeamIds: ["mikel-hoppenbrouwers"],
+
+  // Pick tombstone ids relevant to the target's sector.
+  // Leave as an empty array to show the full library.
+  tombstoneIds: [
+    "innodak-dakaccent",
+    "sempergreen-msq",
+    "lc-batenburg",
+    "blygold-gilde",
+    "jaga-vybros",
+    "glaszetter-pending",
+    "ppc-newport",
+    "lotec-vdk",
+    "sustainablebuildings-fudura",
+    "vlac-hsb"
+  ],
+
+  // OPTIONAL — id from RSM_FIXED_DATA.caseStudies, or null to leave
+  // the case study out of this pitch entirely.
+  caseStudyId: "innodak-dakaccent"
 };
 // ============================================================
 // END DEAL CONFIG
 // ============================================================
 
 
-// ============================================================
-// RSM FIXED CONTENT — do not edit per deal, except DEAL.dealTeam
-// above, which this section reads from.
-// ============================================================
-
-// Firm track record highlights shown next to the deal team card.
-// Firm-wide credentials, not tied to the individual adviser.
-const TEAM_SIDE_DEALS = [
-  { company: "[Onderneming A]", action: "in de verkoop aan", counterparty: "[Koper A]" },
-  { company: "[Onderneming B]", action: "in de overname van", counterparty: "[Target B]" }
-];
-
-// Integrated M&A service lines (deck: "RSM biedt een volledige reeks geïntegreerde M&A-diensten")
-const SERVICE_LINES = [
-  { key:"cf",  short:"Corporate\nFinance",   label:"Corporate Finance", color:"#009CDE", items:[
-      "Buy-side advies", "Sell-side advies", "Fusiebegeleiding", "M&A strategie ontwikkeling", "M&A target search" ] },
-  { key:"val", short:"Valuations",           label:"Valuations", color:"#00153D", items:[
-      "Bedrijfswaardering", "Financieel modelleren", "Purchase Price Allocation (PPA)", "Fairness opinions", "Portefeuille-/fondswaarderingen" ] },
-  { key:"ts",  short:"Transaction\nServices", label:"Transaction Services", color:"#3F9C35", items:[
-      "Financieel due diligence", "Vendor transaction services", "Buy- & sell-side advies" ] },
-  { key:"tax", short:"M&A Tax",              label:"M&A Tax", color:"#63666A", items:[
-      "Buy-side & vendor tax due diligence", "SPA-ondersteuning", "Pre- en post-deal (her)structurering", "Fiscale integratie" ] },
-  { key:"da",  short:"Debt\nAdvisory",       label:"Debt Advisory", color:"#888B8D", items:[
-      "Structureren van financieringsbehoefte", "Assisteren bij herfinanciering", "CAPEX financiering", "M&A financiering" ] }
-];
-
-// "Waarom RSM" differentiators (deck: Leidend MKB huis / M&A executie discipline /
-// Geïntegreerde M&A services / Relevante sectorkennis)
-const DIFFERENTIATORS = [
-  { h:"Bewezen track record", p:"Leidend M&A-huis in de Nederlandse mid-market met een sterk (inter)nationaal netwerk." },
-  { h:"Senior team",          p:"Directe betrokkenheid van senior professionals in elke fase, van analyse tot closing." },
-  { h:"Geïntegreerde expertise", p:"Corporate Finance, Valuations, TS, Tax en Debt Advisory onder één dak." },
-  { h:"Relevante sectorkennis", p:"Diepgaande markt- en sectorkennis, vertaald naar concrete transactieresultaten." }
-];
-
-// Firm statistics — update annually, not per deal.
-const FIRM_STATS = [
-  { v:"38",   l:"M&A professionals" },
-  { v:"7",    l:"Kantoren in Nederland" },
-  { v:"21",   l:"Partners" }
-];
-
-// Corporate Finance focus profile — update annually, not per deal.
-const FOCUS_PROFILE = [
-  { k:"Markt",            v:"Nederlandse MKB(+) markt" },
-  { k:"EBITDA",           v:"€0,5m – €5,0m" },
-  { k:"Enterprise Value", v:"€5,0m – €30,0m" },
-  { k:"Transacties 2025", v:"74 in Nederland, 768 in Europa" },
-  { k:"Sectorfocus",      v:"Facilitaire diensten, logistiek, productie, zorg, IT en e-commerce" }
-];
-
-// RSM Netherlands office cities — update annually, not per deal.
-// cf: true marks the dedicated Corporate Finance offices.
-const OFFICES = [
-  { city:"Alkmaar",   x:74,  y:86,  cf:false },
-  { city:"Amsterdam", x:92,  y:104, cf:true  },
-  { city:"Hoofddorp", x:70,  y:118, cf:false },
-  { city:"Utrecht",   x:106, y:126, cf:true  },
-  { city:"Rotterdam", x:74,  y:146, cf:false },
-  { city:"Eindhoven", x:120, y:184, cf:false },
-  { city:"Heerlen",   x:146, y:214, cf:false }
-];
-
-// Firm-wide track record wall. Reused across every deal — not part of DEAL.
-const TRACK_RECORD = [
-  { company:"[Onderneming 1]",  action:"in de verkoop aan",                              counterparty:"[Koper 1]" },
-  { company:"[Onderneming 2]",  action:"in de overname van",                             counterparty:"[Target 2]" },
-  { company:"[Onderneming 3]",  action:"bij een strategische samenwerking met",           counterparty:"[Partner 3]" },
-  { company:"[Onderneming 4]",  action:"in de verkoop aan",                              counterparty:"[Koper 4]" },
-  { company:"[Onderneming 5]",  action:"in de overname van",                             counterparty:"[Target 5]" },
-  { company:"[Onderneming 6]",  action:"in de verkoop aan",                              counterparty:"[Koper 6]" },
-  { company:"[Onderneming 7]",  action:"bij een strategische samenwerking met",           counterparty:"[Partner 7]" },
-  { company:"[Onderneming 8]",  action:"in de overname van",                             counterparty:"[Target 8]" },
-  { company:"[Onderneming 9]",  action:"in de verkoop aan",                              counterparty:"[Koper 9]" },
-  { company:"[Onderneming 10]", action:"bij een strategische samenwerking met",           counterparty:"[Partner 10]" }
-];
-
-// Featured case study — swap periodically to feature a different reference deal.
-// NOT per-pitch: this is a firm credential, not deal-specific content.
-const CASE_STUDY = {
-  title: "Casestudy — [Referentiebedrijf]",
-  lede: "RSM Corporate Finance werd aangesteld door [Referentiebedrijf] om een partner te vinden voor de verdere groei van de onderneming.",
-  situation: [
-    "[Referentiebedrijf] is actief als [korte omschrijving van de propositie en marktpositie]",
-    "De onderneming bedient [klantsegmenten] vanuit [locatie], met een [inter]nationaal netwerk",
-    "[Referentiebedrijf] zocht een financiële partner om de groei te versnellen en schaalbaarheid beter te benutten"
-  ],
-  value: [
-    "Complexe transactie door ambitieuze groeiverwachtingen in combinatie met een hoog netto werkkapitaalbeslag",
-    "Identificeren van geschikte partners was uitdagend door de financieringsstructuur",
-    "RSM heeft het volledige proces geregisseerd en een competitief transactieproces gewaarborgd"
-  ],
-  phases: [
-    { t:"Voorbereiding", d:"Financieel databook en marktanalyse van het (internationale) koperslandschap" },
-    { t:"NBO",           d:"Teaser, IM en procesbrief; marktbenadering en selectie van geschikte partijen" },
-    { t:"DD / SPA",      d:"Dataroom, Q&A-proces en expertsessies; onderhandeling van SPA en SHA" },
-    { t:"Closing",       d:"Stakeholdermanagement en begeleiding tot en met de uiteindelijke closing" }
-  ],
-  metrics: [
-    { v:"€[XX]m", l:"Omzet" },
-    { v:"€[XX]m", l:"EBITDA" },
-    { v:"[XX]",   l:"Medewerkers" },
-    { v:"[XX]",   l:"Jaar ervaring" }
-  ]
-};
-
 (function(){
   const BLUE = "#009CDE";
   const NAVY = "#00153D";
   const GRAY = "#63666A";
   const GRAY_MID = "#888B8D";
-  const RECESSED = "#F2F4F9";
+  const RECESSED = "#F4F6FA";
+
+  const FD = RSM_FIXED_DATA;
 
   const svgNS = "http://www.w3.org/2000/svg";
   function svgEl(tag, attrs){
@@ -641,6 +869,33 @@ const CASE_STUDY = {
     return e;
   }
 
+  // ---------- inline icons for the differentiator tiles ----------
+  function icon(kind){
+    const s = svgEl("svg", { viewBox:"0 0 24 24", width:22, height:22, fill:"none",
+                             stroke:BLUE, "stroke-width":1.5, "stroke-linecap":"round", "stroke-linejoin":"round" });
+    if(kind === "people"){
+      s.appendChild(svgEl("circle", { cx:9, cy:8, r:3.2 }));
+      s.appendChild(svgEl("path", { d:"M3.2 19.6c0-3.4 2.6-5.7 5.8-5.7s5.8 2.3 5.8 5.7" }));
+      s.appendChild(svgEl("circle", { cx:17.4, cy:9.2, r:2.4 }));
+      s.appendChild(svgEl("path", { d:"M16.4 14.3c2.4-.3 4.4 1.6 4.4 4.4" }));
+    } else if(kind === "award"){
+      s.appendChild(svgEl("circle", { cx:12, cy:8.6, r:5.4 }));
+      s.appendChild(svgEl("path", { d:"M8.6 13.2 7.2 21.4 12 18.7l4.8 2.7-1.4-8.2" }));
+      s.appendChild(svgEl("path", { d:"M12 6.1l.95 1.9 2.1.3-1.52 1.5.36 2.1-1.89-1-1.89 1 .36-2.1-1.52-1.5 2.1-.3z" }));
+    } else {
+      s.appendChild(svgEl("circle", { cx:12, cy:12, r:3.1 }));
+      s.appendChild(svgEl("circle", { cx:12, cy:12, r:6.6 }));
+      for(let i=0;i<8;i++){
+        const a = (i*45) * Math.PI/180;
+        s.appendChild(svgEl("line", {
+          x1: 12 + 6.6*Math.cos(a), y1: 12 + 6.6*Math.sin(a),
+          x2: 12 + 8.9*Math.cos(a), y2: 12 + 8.9*Math.sin(a)
+        }));
+      }
+    }
+    return s;
+  }
+
   // ---------- DEAL-driven text ----------
   function renderDeal(){
     document.querySelectorAll('[data-deal]').forEach(node => {
@@ -648,66 +903,109 @@ const CASE_STUDY = {
       if(DEAL[key] !== undefined) node.textContent = DEAL[key];
     });
     document.title = DEAL.companyName + " — " + DEAL.pitchTitle;
-
-    const t = DEAL.dealTeam;
-    document.getElementById("teamName").textContent = t.name;
-    document.getElementById("teamTitle").textContent = t.title;
-    document.getElementById("teamLocation").textContent = t.location;
-    document.getElementById("teamPhone").textContent = t.phone;
-    document.getElementById("teamEmail").textContent = t.email;
-
-    const bio = document.getElementById("teamBio");
-    bio.innerHTML = "";
-    t.bio.forEach(line => bio.appendChild(el("li", null, line)));
-
-    // footer line repeated under every section
-    const footerText = DEAL.companyName + "  |  " + DEAL.pitchTitle + "  |  STRIKT PERSOONLIJK EN VERTROUWELIJK";
-    document.querySelectorAll(".section-footer").forEach(f => f.textContent = footerText);
   }
 
-  // ---------- 1a. firm deal highlights beside the team card ----------
-  function renderTeamSideDeals(){
-    const host = document.getElementById("teamSideDeals");
+  // ---------- deal team (DEAL picks 1-3 people by id) ----------
+  function renderDealTeam(){
+    const host = document.getElementById("dealTeamCards");
     host.innerHTML = "";
-    TEAM_SIDE_DEALS.forEach(d => {
-      const box = el("div", "deal-box");
-      box.appendChild(el("div", "logo-ph", d.company));
-      box.appendChild(el("div", "act", "RSM Corporate Finance adviseerde " + d.action));
-      box.appendChild(el("div", "logo-ph", d.counterparty));
-      box.appendChild(el("div", "rsm", "RSM CORPORATE FINANCE"));
-      host.appendChild(box);
+
+    DEAL.dealTeamIds.forEach(id => {
+      const p = FD.teamRoster[id];
+      if(!p){
+        host.appendChild(el("div", "team-missing", 'Onbekend team-id: "' + id + '"'));
+        return;
+      }
+      const row = el("div", "team-member");
+
+      const photo = el("div", "photo-ph", "Foto");
+      photo.title = p.photoPath;
+      row.appendChild(photo);
+
+      const info = el("div", "team-info");
+      info.appendChild(el("div", "team-name", p.name));
+      info.appendChild(el("div", "team-role", p.title));
+
+      const contact = el("div", "team-contact");
+      [["Locatie", p.location, false], ["Telefoon", p.phone, true], ["E-mail", p.email, false]].forEach(function(f){
+        contact.appendChild(el("span", "lbl", f[0]));
+        contact.appendChild(el("span", f[2] ? "val num" : "val", f[1]));
+      });
+      info.appendChild(contact);
+
+      const ul = el("ul", "team-bio");
+      p.bio.forEach(b => ul.appendChild(el("li", null, b)));
+      info.appendChild(ul);
+
+      row.appendChild(info);
+      host.appendChild(row);
     });
   }
 
-  // ---------- 1b. services wheel ----------
+  // ---------- headline stats + award beside the team ----------
+  function renderTeamSide(){
+    const s = FD.firmStats;
+
+    const stats = document.getElementById("teamStats");
+    stats.innerHTML = "";
+    [
+      { v: String(s.maProfessionals),      l: "M&A professionals" },
+      { v: String(s.transactionsThisYear), l: "Transacties in " + s.transactionsYear }
+    ].forEach(t => {
+      const tile = el("div", "stat-mini");
+      tile.appendChild(el("div", "v num", t.v));
+      tile.appendChild(el("div", "l", t.l));
+      stats.appendChild(tile);
+    });
+
+    const award = document.getElementById("awardBox");
+    award.innerHTML = "";
+    award.appendChild(el("div", "a1", s.awardLine1));
+    award.appendChild(el("div", "a2", s.awardLine2));
+    award.appendChild(el("div", "a3", s.awardLine3));
+  }
+
+  // ---------- differentiators ----------
+  function renderDifferentiators(){
+    const host = document.getElementById("diffStrip");
+    host.innerHTML = "";
+    FD.differentiatorTiles.forEach(d => {
+      const tile = el("div", "diff-tile");
+      const ico = el("div", "diff-icon");
+      ico.appendChild(icon(d.icon));
+      tile.appendChild(ico);
+      tile.appendChild(el("div", "h", d.title));
+      host.appendChild(tile);
+    });
+  }
+
+  // ---------- services wheel ----------
   function drawServicesWheel(){
     const svg = document.getElementById("servicesWheel");
     while(svg.firstChild) svg.removeChild(svg.firstChild);
 
     const cx = 230, cy = 200, ringR = 132, nodeR = 52;
 
-    // spokes first, so nodes sit on top
-    SERVICE_LINES.forEach((s, i) => {
+    FD.servicesWheel.forEach((s, i) => {
       const a = (-90 + i * 72) * Math.PI / 180;
-      const x = cx + ringR * Math.cos(a), y = cy + ringR * Math.sin(a);
-      svg.appendChild(svgEl("line", { x1:cx, y1:cy, x2:x, y2:y, stroke:"#DDE3EC", "stroke-width":2 }));
+      svg.appendChild(svgEl("line", {
+        x1:cx, y1:cy, x2:cx + ringR*Math.cos(a), y2:cy + ringR*Math.sin(a),
+        stroke:"#E4E9F0", "stroke-width":2
+      }));
     });
 
-    // centre mark
     svg.appendChild(svgEl("circle", { cx:cx, cy:cy, r:56, fill:NAVY }));
-    const c1 = svgEl("text", { x:cx, y:cy-4, "text-anchor":"middle", "font-size":16, "font-weight":700, fill:"#FFFFFF" });
+    const c1 = svgEl("text", { x:cx, y:cy-3, "text-anchor":"middle", "font-size":17, "font-weight":700, fill:"#FFFFFF" });
     c1.textContent = "RSM";
     svg.appendChild(c1);
-    const c2 = svgEl("text", { x:cx, y:cy+14, "text-anchor":"middle", "font-size":10, fill:"#93A3BC" });
-    c2.textContent = "M&A services";
+    const c2 = svgEl("text", { x:cx, y:cy+15, "text-anchor":"middle", "font-size":9, fill:"#93A3BC", "letter-spacing":"0.8" });
+    c2.textContent = "M&A SERVICES";
     svg.appendChild(c2);
 
-    // service nodes
-    SERVICE_LINES.forEach((s, i) => {
+    FD.servicesWheel.forEach((s, i) => {
       const a = (-90 + i * 72) * Math.PI / 180;
       const x = cx + ringR * Math.cos(a), y = cy + ringR * Math.sin(a);
-      svg.appendChild(svgEl("circle", { cx:x, cy:y, r:nodeR, fill:"#FFFFFF", stroke:s.color, "stroke-width":2 }));
-
+      svg.appendChild(svgEl("circle", { cx:x, cy:y, r:nodeR, fill:"#FFFFFF", stroke:s.color, "stroke-width":1.75 }));
       const lines = s.short.split("\n");
       lines.forEach((ln, li) => {
         const t = svgEl("text", {
@@ -723,10 +1021,10 @@ const CASE_STUDY = {
   function renderServiceCards(){
     const host = document.getElementById("svcCards");
     host.innerHTML = "";
-    SERVICE_LINES.forEach(s => {
+    FD.servicesWheel.forEach(s => {
       const card = el("div", "svc-card");
       const h = el("h4", null, s.label);
-      h.style.color = s.color === "#888B8D" || s.color === "#63666A" ? NAVY : s.color;
+      h.style.color = (s.color === "#888B8D" || s.color === "#63666A") ? NAVY : s.color;
       card.appendChild(h);
       const ul = el("ul");
       s.items.forEach(i => ul.appendChild(el("li", null, i)));
@@ -735,18 +1033,7 @@ const CASE_STUDY = {
     });
   }
 
-  function renderDifferentiators(){
-    const host = document.getElementById("diffStrip");
-    host.innerHTML = "";
-    DIFFERENTIATORS.forEach(d => {
-      const tile = el("div", "diff-tile");
-      tile.appendChild(el("div", "h", d.h));
-      tile.appendChild(el("div", "p", d.p));
-      host.appendChild(tile);
-    });
-  }
-
-  // ---------- 1c. footprint ----------
+  // ---------- footprint ----------
   function drawMap(){
     const svg = document.getElementById("nlMap");
     while(svg.firstChild) svg.removeChild(svg.firstChild);
@@ -756,91 +1043,134 @@ const CASE_STUDY = {
       d: "M62,52 L80,42 L98,52 L114,44 L140,58 L160,52 L178,68 L172,94 L158,112 L168,134 " +
          "L158,162 L174,188 L160,212 L140,236 L118,228 L104,210 L86,198 L70,178 L58,150 " +
          "L50,120 L46,92 Z",
-      fill: RECESSED, stroke:"#DDE3EC", "stroke-width":1.5, "stroke-linejoin":"round"
+      fill: RECESSED, stroke:"#DDE3EC", "stroke-width":1.25, "stroke-linejoin":"round"
     }));
 
-    OFFICES.forEach(o => {
-      svg.appendChild(svgEl("circle", {
-        cx:o.x, cy:o.y, r: o.cf ? 6 : 4,
-        fill: o.cf ? BLUE : GRAY_MID
-      }));
+    FD.firmStats.officeCities.forEach(city => {
+      const c = FD.mapCoords[city];
+      if(!c) return; // a city without coordinates is simply not plotted
+      const isCF = FD.cfOfficeCities.indexOf(city) !== -1;
+      if(isCF){
+        svg.appendChild(svgEl("circle", { cx:c.x, cy:c.y, r:9, fill:BLUE, opacity:.16 }));
+      }
+      svg.appendChild(svgEl("circle", { cx:c.x, cy:c.y, r: isCF ? 4.6 : 3.2, fill: isCF ? BLUE : GRAY_MID }));
       const label = svgEl("text", {
-        x: o.x + (o.cf ? 11 : 9), y: o.y + 4,
-        "font-size": o.cf ? 10.5 : 9.5,
-        "font-weight": o.cf ? 700 : 400,
-        fill: o.cf ? NAVY : GRAY
+        x: c.x + (isCF ? 13 : 9), y: c.y + 3.6,
+        "font-size": isCF ? 10 : 9,
+        "font-weight": isCF ? 700 : 400,
+        fill: isCF ? NAVY : GRAY
       });
-      label.textContent = o.city;
+      label.textContent = city;
       svg.appendChild(label);
     });
 
-    const legend = svgEl("text", { x:10, y:266, "font-size":9, fill:GRAY_MID });
-    legend.textContent = "Blauw = Corporate Finance kantoren";
+    const legend = svgEl("text", { x:8, y:268, "font-size":8.5, fill:"#CCCFCF", "letter-spacing":"0.8" });
+    legend.textContent = "BLAUW = CORPORATE FINANCE KANTOREN";
     svg.appendChild(legend);
   }
 
   function renderStats(){
+    const s = FD.firmStats;
     const host = document.getElementById("statRow");
     host.innerHTML = "";
-    FIRM_STATS.forEach(s => {
+    [
+      { v: String(s.nlProfessionals), l: "Professionals in NL" },
+      { v: String(s.nlOffices),       l: "Kantoren in NL" },
+      { v: String(s.nlPartners),      l: "Partners" }
+    ].forEach(t => {
       const tile = el("div", "stat-tile");
-      const v = el("div", "v num", s.v);
-      tile.appendChild(v);
-      tile.appendChild(el("div", "l", s.l));
+      tile.appendChild(el("div", "v num", t.v));
+      tile.appendChild(el("div", "l", t.l));
       host.appendChild(tile);
     });
 
     const fl = document.getElementById("focusList");
     fl.innerHTML = "";
-    FOCUS_PROFILE.forEach(f => {
-      const row = el("div", "focus-row");
-      row.appendChild(el("span", "k", f.k));
-      row.appendChild(el("span", "v", f.v));
+    FD.focusProfile.forEach(f => {
+      const row = el("div", "fact");
+      row.appendChild(el("div", "k", f.k));
+      row.appendChild(el("div", "v", f.v));
       fl.appendChild(row);
     });
+    const tx = el("div", "fact");
+    tx.appendChild(el("div", "k", "Transacties " + s.transactionsYear));
+    tx.appendChild(el("div", "v", s.transactionsThisYear + " afgeronde transacties in Nederland"));
+    fl.appendChild(tx);
   }
 
-  // ---------- 1d. track record ----------
-  function renderTrackRecord(){
+  // ---------- tombstones (DEAL picks a relevant subset) ----------
+  function renderTombstones(){
     const host = document.getElementById("trackRecord");
     host.innerHTML = "";
-    TRACK_RECORD.forEach(t => {
-      const tile = el("div", "tr-tile");
-      tile.appendChild(el("div", "co", t.company));
-      tile.appendChild(el("div", "act", t.action));
-      tile.appendChild(el("div", "cp", t.counterparty));
-      tile.appendChild(el("div", "rsm", "RSM CORPORATE FINANCE"));
+
+    const ids = (DEAL.tombstoneIds && DEAL.tombstoneIds.length)
+      ? DEAL.tombstoneIds
+      : FD.tombstones.map(t => t.id);
+
+    ids.forEach(id => {
+      const t = FD.tombstones.find(x => x.id === id);
+      if(!t) return; // an unknown id is skipped rather than breaking the grid
+
+      const tile = el("div", "tomb");
+      tile.appendChild(el("div", "sector", t.sector || ""));
+
+      const body = el("div", "tomb-body");
+      body.appendChild(el("div", "party", t.ourClient));
+      body.appendChild(el("div", "act", t.action));
+      if(t.counterparty){
+        body.appendChild(el("div", "party", t.counterparty));
+      } else {
+        const wrap = el("div");
+        wrap.appendChild(el("span", "status", t.status || "IN UITVOERING"));
+        body.appendChild(wrap);
+      }
+      tile.appendChild(body);
+
+      tile.appendChild(el("div", "foot", "RSM Corporate Finance"));
       host.appendChild(tile);
     });
   }
 
-  // ---------- 1e. case study ----------
+  // ---------- case study (OPTIONAL per deal) ----------
   function renderCaseStudy(){
-    document.getElementById("csTitle").textContent = CASE_STUDY.title;
-    document.getElementById("csLede").textContent = CASE_STUDY.lede;
+    const card = document.getElementById("caseStudyCard");
+    const cs = DEAL.caseStudyId ? FD.caseStudies[DEAL.caseStudyId] : null;
+
+    // no case study selected (or unknown id) — remove the exhibit entirely
+    if(!cs){ card.remove(); return; }
+
+    document.getElementById("csBanner").textContent = cs.banner;
+    document.getElementById("csTitle").textContent = cs.title;
 
     const sit = document.getElementById("csSituation");
     sit.innerHTML = "";
-    CASE_STUDY.situation.forEach(s => sit.appendChild(el("li", null, s)));
+    cs.situatie.forEach(s => sit.appendChild(el("li", null, s)));
 
     const val = document.getElementById("csValue");
     val.innerHTML = "";
-    CASE_STUDY.value.forEach(s => val.appendChild(el("li", null, s)));
+    cs.toegevoegdeWaarde.forEach(s => val.appendChild(el("li", null, s)));
 
     const ph = document.getElementById("csPhases");
     ph.innerHTML = "";
-    CASE_STUDY.phases.forEach((p, i) => {
-      if(i > 0) ph.appendChild(el("div", "phase-arrow", "›"));
-      const box = el("div", "phase");
-      box.appendChild(el("div", "pn", String(i+1)));
-      box.appendChild(el("div", "pt", p.t));
-      box.appendChild(el("div", "pd", p.d));
-      ph.appendChild(box);
+    cs.scope.forEach((p, i) => {
+      const step = el("div", "step");
+      step.appendChild(el("div", "step-num", String(i+1)));
+      step.appendChild(el("div", "step-t", p.phase));
+      const ul = el("ul");
+      p.items.forEach(it => ul.appendChild(el("li", null, it)));
+      step.appendChild(ul);
+      ph.appendChild(step);
     });
 
+    const k = cs.kerncijfers;
     const mr = document.getElementById("csMetrics");
     mr.innerHTML = "";
-    CASE_STUDY.metrics.forEach(m => {
+    [
+      { v:k.omzet,        l:"Omzet" },
+      { v:k.ebitda,       l:"EBITDA" },
+      { v:k.medewerkers,  l:"Medewerkers" },
+      { v:k.jaarErvaring, l:"Jaar ervaring" }
+    ].forEach(m => {
       const tile = el("div", "metric");
       tile.appendChild(el("div", "v num", m.v));
       tile.appendChild(el("div", "l", m.l));
@@ -848,15 +1178,50 @@ const CASE_STUDY = {
     });
   }
 
+  // ---------- exhibit numbering (document order, after optional removals) ----------
+  function numberExhibits(){
+    document.querySelectorAll("[data-exhibit]").forEach((n, i) => {
+      n.textContent = "Exhibit " + (i + 1);
+    });
+  }
+
+  // ---------- sticky nav: appear past the cover, highlight current section ----------
+  function initNav(){
+    const bar = document.getElementById("topbar");
+    const cover = document.getElementById("cover");
+    const links = Array.prototype.slice.call(document.querySelectorAll("#topnav a"));
+
+    new IntersectionObserver(function(entries){
+      bar.classList.toggle("visible", !entries[0].isIntersecting);
+    }, { rootMargin: "-60px 0px 0px 0px" }).observe(cover);
+
+    const sections = links
+      .map(a => document.querySelector(a.getAttribute("href")))
+      .filter(Boolean);
+
+    const spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(!entry.isIntersecting) return;
+        const id = "#" + entry.target.id;
+        links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === id));
+      });
+    }, { rootMargin: "-64px 0px -70% 0px", threshold: 0 });
+
+    sections.forEach(s => spy.observe(s));
+  }
+
   renderDeal();
-  renderTeamSideDeals();
+  renderDealTeam();
+  renderTeamSide();
+  renderDifferentiators();
   drawServicesWheel();
   renderServiceCards();
-  renderDifferentiators();
   drawMap();
   renderStats();
-  renderTrackRecord();
+  renderTombstones();
   renderCaseStudy();
+  numberExhibits();
+  initNav();
 })();
 </script>
 
