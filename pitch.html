@@ -152,9 +152,32 @@
   .toc a:hover .t{ color:var(--blue); }
 
   /* ---------- deal team ---------- */
-  .team-grid{ display:grid; grid-template-columns:1fr 268px; gap:26px; align-items:start; }
-  .team-member{ display:flex; gap:20px; }
+  .team-member{ display:grid; grid-template-columns:124px minmax(0,1fr) 224px; gap:22px; align-items:start; }
   .team-member + .team-member{ margin-top:22px; padding-top:22px; border-top:1px solid var(--rule); }
+
+  /* a person's own recent transactions, beside their profile */
+  .member-deals{ display:flex; flex-direction:column; gap:10px; }
+  .member-deals-h{
+    font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:var(--gray-mid); padding-bottom:7px; border-bottom:1px solid var(--rule-strong);
+  }
+  .mini-tomb{
+    border:1px solid var(--rule-strong); border-radius:4px; padding:11px 12px;
+    text-align:center; display:flex; flex-direction:column; gap:5px;
+  }
+  .mini-tomb .st{ font-size:8.5px; font-weight:700; letter-spacing:.11em; text-transform:uppercase; color:var(--blue); }
+  .mini-tomb .pty{ font-size:12px; font-weight:700; color:var(--navy); line-height:1.25; }
+  .mini-tomb .desc{ font-size:9.5px; font-style:italic; color:var(--gray-mid); line-height:1.45; }
+  .mini-tomb .tag{
+    display:inline-block; font-size:8.5px; font-weight:700; letter-spacing:.1em;
+    color:var(--blue); border:1px solid var(--blue); border-radius:3px; padding:2px 8px;
+  }
+
+  /* firm credentials band under the profiles */
+  .cred-band{
+    display:grid; grid-template-columns:auto minmax(0,1fr); gap:14px; align-items:stretch;
+    margin-top:22px; padding-top:22px; border-top:1px solid var(--rule);
+  }
   .photo-ph{
     flex:none; width:124px; height:155px; border-radius:4px;
     background:var(--recessed); border:1px solid var(--rule);
@@ -175,9 +198,8 @@
   }
   .team-missing{ font-size:11.5px; color:#B00020; }
 
-  .team-aside{ display:flex; flex-direction:column; gap:12px; }
-  .team-stats{ display:flex; flex-direction:column; gap:12px; }
-  .stat-mini{ background:var(--recessed); border-radius:4px; padding:14px 16px; }
+  .team-stats{ display:flex; gap:12px; }
+  .stat-mini{ background:var(--recessed); border-radius:4px; padding:14px 16px; min-width:158px; }
   .stat-mini .v{ font-size:28px; font-weight:700; color:var(--navy); line-height:1; letter-spacing:-.02em; }
   .stat-mini .l{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-mid); margin-top:7px; }
   .award{ border:1px solid var(--rule-strong); border-radius:4px; padding:14px 16px; }
@@ -266,8 +288,14 @@
   .step li{ position:relative; padding-left:11px; font-size:10.5px; line-height:1.55; margin-bottom:5px; color:var(--gray); }
   .step li::before{ content:""; position:absolute; left:0; top:8px; width:4px; height:1px; background:var(--gray-light); }
 
+  .cs-sector{
+    display:inline-block; margin-top:8px; padding:3px 9px; border-radius:3px;
+    background:var(--recessed); color:var(--gray-mid);
+    font-size:9px; font-weight:700; letter-spacing:.11em; text-transform:uppercase;
+  }
   .metric-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
   .metric{ background:var(--recessed); border-radius:4px; padding:15px 17px; }
+  .metric-icon{ line-height:0; margin-bottom:10px; }
   .metric .v{ font-size:24px; font-weight:700; color:var(--blue); line-height:1; letter-spacing:-.02em; }
   .metric .l{ font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--gray-mid); margin-top:8px; }
 
@@ -297,7 +325,10 @@
 
   /* ---------- responsive ---------- */
   @media (max-width:900px){
-    .team-grid,.wheel-grid,.fp-grid,.cs-cols{ grid-template-columns:1fr; }
+    .wheel-grid,.fp-grid,.cs-cols{ grid-template-columns:1fr; }
+    .team-member{ grid-template-columns:124px minmax(0,1fr); }
+    .member-deals{ grid-column:1 / -1; }
+    .cred-band{ grid-template-columns:1fr; }
     .process{ grid-template-columns:repeat(2,1fr); }
     .process::before{ display:none; }
     .diff-strip{ grid-template-columns:1fr; }
@@ -309,7 +340,8 @@
     .cover-inner,.legal-inner,.topbar-inner{ padding-left:18px; padding-right:18px; }
     .exhibit{ padding:22px 18px 18px; }
     .cover-body{ padding:64px 0 56px; }
-    .team-member{ flex-direction:column; }
+    .team-member{ grid-template-columns:1fr; }
+    .team-stats{ flex-direction:column; }
     .toc a{ grid-template-columns:26px 1fr; }
     .toc .d{ display:none; }
     .metric-row,.stat-row,.process{ grid-template-columns:1fr; }
@@ -427,12 +459,10 @@
       <p class="exhibit-lede">Directe betrokkenheid van senior professionals in elke fase van de transactie, van initiële analyse tot closing.</p>
       <hr class="rule">
     </div>
-    <div class="team-grid">
-      <div id="dealTeamCards"></div>
-      <aside class="team-aside">
-        <div class="team-stats" id="teamStats"></div>
-        <div class="award" id="awardBox"></div>
-      </aside>
+    <div id="dealTeamCards"></div>
+    <div class="cred-band">
+      <div class="team-stats" id="teamStats"></div>
+      <div class="award" id="awardBox"></div>
     </div>
     <div class="diff-strip" id="diffStrip"></div>
     <div class="exhibit-source">Bron: RSM Netherlands Corporate Finance</div>
@@ -488,6 +518,7 @@
     <div class="exhibit-head">
       <div class="kicker" data-exhibit></div>
       <h3 class="exhibit-title" id="csTitle"></h3>
+      <div class="cs-sector" id="csSector"></div>
       <hr class="rule">
     </div>
     <div class="cs-banner" id="csBanner"></div>
@@ -497,7 +528,7 @@
         <ul class="cs-list" id="csSituation"></ul>
       </div>
       <div>
-        <div class="cs-h">Toegevoegde waarde RSM Corporate Finance</div>
+        <div class="cs-h">Uitdagingen en toegevoegde waarde RSM CF</div>
         <ul class="cs-list" id="csValue"></ul>
       </div>
     </div>
@@ -671,36 +702,104 @@
 
 <script>
 // ============================================================
-// RSM_FIXED_DATA — RSM's permanent content. Update this when the FIRM
-// changes (a new colleague, a new tombstone, the annual statistics),
-// never for an individual pitch. DEAL below references entries here by
-// id, so preparing a new deal means "pick from this list", not
-// "retype a bio".
+// RSM FIXED CONTENT LIBRARY — update centrally, not per deal.
+//
+// Everything below is RSM-wide content: real people, real transactions,
+// RSM's standard process. It is maintained once, centrally, and reused
+// across every pitch. A pitch never rewrites this content — it only
+// SELECTS from it, at exactly two points:
+//   DEAL.dealTeamMemberIds  -> which 1-3 people from TEAM_ROSTER
+//   DEAL.caseStudyId        -> which entry from CASE_STUDY_LIBRARY
 // ============================================================
+
+const TEAM_ROSTER = [
+  {
+    id: "mikel-hoppenbrouwers",
+    name: "Mikel Hoppenbrouwers",
+    title: "Director | Corporate Finance",
+    location: "Utrecht, Nederland",
+    phone: "+31 (0)6 82 01 21 87",
+    email: "MHoppenbrouwers@rsmnl.nl",
+    photoNote: "// vervang met echte pasfoto",
+    bio: [
+      "Mikel heeft meer dan 12 jaar ervaring in het begeleiden van transacties. Hij begon als Corporate Finance Consultant bij Deloitte en werkte daarna als Corporate Development Manager bij een private-equity portfolio-bedrijf met een wereldwijde dekking en een focus op buy-and-build",
+      "Sinds 2023 is Mikel werkzaam bij RSM als Director Corporate Finance, waar hij verantwoordelijk is voor de aansturing van het Corporate Finance team",
+      "Mikel staat bekend om zijn pragmatische en hands-on aanpak"
+    ],
+    recentDeals: [
+      { status: "Adviseert", description: "bij een mogelijke verkoop", counterparty: "Een gerenommeerd glaszettersbedrijf", tag: "PENDING" },
+      { status: "Adviseerde", description: "bij het aangaan van een strategische samenwerking met", target: "Innodak", counterparty: "DakAccent" }
+    ]
+  }
+  // Add further roster entries here as more deal-team members join —
+  // each entry is a permanent, reusable profile. A pitch selects 1-3
+  // of these by id (see DEAL.dealTeamMemberIds below); never duplicate
+  // or rewrite a person's bio per deal.
+];
+
+const CASE_STUDY_LIBRARY = [
+  {
+    id: "innodak-dakaccent",
+    headline: "RSM M&A Services trad op als adviseur van de aandeelhouders van Innodak bij de verkoop aan DakAccent (portfoliobedrijf Foreman)",
+    sector: "Dakbedekking / bouw & installatietechniek",
+    situatie: [
+      "Innodak is een gevestigde Nederlandse B2B-dakenspecialist met een historie sinds 1933, een hoofdvestiging in Boxtel en een aanvullende vestiging in Amsterdam voor verdere dekking richting de Randstad",
+      "De onderneming is gespecialiseerd in dakrenovatie en nieuwbouw, dakveiligheid, duurzame daken en onderhoud & inspectie, waarbij Innodak volledige projecten verzorgt van advies tot uitvoering",
+      "Innodak onderscheidt zich door een sterke focus op kwaliteit, veiligheid en duurzaamheid, ondersteund door relevante certificeringen en samenwerkingen",
+      "De onderneming bedient een loyaal en zakelijk klantenbestand, waaronder gemeenten, vastgoedbeheerders, zorginstellingen en grotere zakelijke klanten, met een belangrijke rol voor meerjarige onderhouds- en servicecontracten",
+      "De aandeelhouders zochten een strategische partner die kon bijdragen aan de volgende groeifase, waaronder verdere uitbouw van de Randstad-positie, versterking bij bestaande klanten en mogelijke buy-and-build kansen"
+    ],
+    uitdagingen: [
+      "RSM CF ondersteunde bij het opzetten van een vaststellingsovereenkomst tussen de aandeelhouders, waarmee de onderlinge verhoudingen voorafgaand aan de verkoop werden afgestemd en de basis werd gelegd voor een gezamenlijk verkooptraject",
+      "RSM CF positioneerde Innodak als een kwalitatief hoogwaardige B2B-dakenspecialist met sterke klantrelaties, terugkerende service-inkomsten en aantrekkelijke groeimogelijkheden, wat heeft bijgedragen aan competitieve spanning in het proces",
+      "RSM CF begeleidde de onderhandelingen over de earn-out structuur en zorgde voor heldere afspraken over de voorwaarden en berekeningsmethodiek, waardoor het risico op discussies na closing werd beperkt",
+      "RSM CF ondersteunde bij de overdracht van materiële vaste activa naar de persoonlijke holdings van de verkopers, zonder impact op de ondernemingswaarde of de overeengekomen transactievoorwaarden"
+    ],
+    kerncijfers: [
+      { icon: "trending-up", value: "€4,2m", label: "Omzet" },
+      { icon: "pie-chart",   value: "€840k", label: "Genormaliseerde EBITDA" },
+      { icon: "handshake",   value: "12",    label: "Medewerkers" },
+      { icon: "calendar",    value: "90+",   label: "Jaar ervaring" }
+    ],
+    footerLine: "Een optimaal competitief transactieproces wordt gegarandeerd door de \"full-service M&A-ondersteuning\" van RSM"
+  }
+  // Add further case studies here as RSM completes more relevant deals.
+  // Selection per deal happens via DEAL.caseStudyId — pick whichever
+  // entry is most relevant to the sector/deal-type being pitched (e.g.
+  // a roofing/construction target should surface the Innodak case
+  // above; a different sector should surface a different entry once
+  // added). The 4-phase "Scope van werkzaamheden" box below is NOT
+  // part of this library — it's identical for every case study, since
+  // it describes RSM's standard process, not deal-specific detail.
+];
+
+// RSM's standard sell-side scope. Identical for every case study and
+// every deal — it describes how RSM works, not what happened in one
+// transaction, so it lives outside CASE_STUDY_LIBRARY.
+const RSM_STANDARD_SCOPE = [
+  { phase: 1, title: "Voorbereidingen", bullets: [
+    "Analyseren van (financiële) informatie en voorbereiden van verkoopdocumentatie (o.a. IM, teaser, kandidaat-koperslijst, etc.)",
+    "Opstellen kandidaat-koperslijst en bepalen van de verkoopstrategie"
+  ] },
+  { phase: 2, title: "Non-binding offer (NBO)", bullets: [
+    "Analyseren van ontvangen NBO's",
+    "Uitonderhandelen NBO's richting 'principeakkoord'"
+  ] },
+  { phase: 3, title: "Due Diligence & SPA", bullets: [
+    "Coördinatie Due Diligence",
+    "Aanspreekpunt voor de adviseur van kandidaat-koper",
+    "Uitonderhandelen van SPA/SHA"
+  ] },
+  { phase: 4, title: "Closing", bullets: [
+    "Afstemming met de juridische en fiscale adviseurs van de koper",
+    "Ondersteuning richting afronding en closing van de transactie"
+  ] }
+];
+
+// --- Remaining firm-level content (services, footprint, tombstones) ---
 const RSM_FIXED_DATA = {
 
-  // --- Corporate Finance team roster (real people, real bios) ---
-  // Add every real CF team member here over time.
-  // DEAL.dealTeamIds selects 1-3 by id for the deal team card.
-  teamRoster: {
-    "mikel-hoppenbrouwers": {
-      name: "Mikel Hoppenbrouwers",
-      title: "Director | Corporate Finance",
-      location: "Utrecht, Nederland",
-      phone: "+31 (0)6 82 01 21 87",
-      email: "MHoppenbrouwers@rsmnl.nl",
-      photoPath: "[pad naar foto]",
-      bio: [
-        "Mikel heeft meer dan 12 jaar ervaring in het begeleiden van transacties. Hij begon als Corporate Finance Consultant bij Deloitte en werkte daarna als Corporate Development Manager bij een private-equity portfolio-bedrijf met een wereldwijde dekking en een focus op buy-and-build",
-        "Sinds 2023 is Mikel werkzaam bij RSM als Director Corporate Finance, waar hij verantwoordelijk is voor de aansturing van het Corporate Finance team",
-        "Mikel staat bekend om zijn pragmatische en hands-on aanpak"
-      ]
-    }
-    // "add-second-team-member": { ...same shape... },
-    // "add-third-team-member": { ...same shape... },
-  },
-
-  // --- Firm-wide annual stats (update ~yearly, not per deal) ---
+  // Firm-wide annual stats (update ~yearly, not per deal)
   firmStats: {
     transactionsThisYear: 74,
     transactionsYear: 2025,
@@ -714,17 +813,15 @@ const RSM_FIXED_DATA = {
     officeCities: ["Alkmaar", "Amsterdam", "Hoofddorp", "Utrecht", "Rotterdam", "Eindhoven", "Heerlen"]
   },
 
-  // --- Differentiator tiles (deal team exhibit) ---
-  // icon: "award" | "people" | "gear" — matches the reference deck's icon style
+  // Differentiator tiles — icon: "award" | "people" | "gear"
   differentiatorTiles: [
     { title: "Leidend M&A huis met bewezen track record", icon: "award" },
     { title: "Senior executie-team en hands-on transactiebegeleiding", icon: "people" },
     { title: "Geïntegreerd team met relevante in-house expertise", icon: "gear" }
   ],
 
-  // --- Tombstone library (master list) ---
-  // DEAL.tombstoneIds selects a subset, chosen for relevance to the
-  // target's sector. counterparty: null + status renders as a status chip.
+  // Tombstone library — DEAL.tombstoneIds selects a sector-relevant subset.
+  // counterparty: null + status renders as a status chip.
   tombstones: [
     { id: "innodak-dakaccent", ourClient: "Innodak", action: "in het aangaan van een strategische samenwerking met", counterparty: "DAKaccent", sector: "dakbedekking" },
     { id: "sempergreen-msq", ourClient: "sempergreen", action: "in het aangaan van een strategische samenwerking met", counterparty: "msq", sector: "groendaken" },
@@ -738,39 +835,7 @@ const RSM_FIXED_DATA = {
     { id: "vlac-hsb", ourClient: "Vlac", action: "in de verkoop aan", counterparty: "HSB", sector: "installatietechniek" }
   ],
 
-  // --- Case study library (optional per deal) ---
-  caseStudies: {
-    "innodak-dakaccent": {
-      title: "RSM M&A Services trad op als adviseur van de aandeelhouders van Innodak bij de verkoop aan DakAccent (portfoliobedrijf Foreman)",
-      situatie: [
-        "Innodak is een gevestigde Nederlandse B2B-dakenspecialist met een historie sinds 1933, een hoofdvestiging in Boxtel en een aanvullende vestiging in Amsterdam voor verdere dekking richting de Randstad",
-        "De onderneming is gespecialiseerd in dakrenovatie en nieuwbouw, dakveiligheid, duurzame daken en onderhoud & inspectie, waarbij Innodak volledige projecten verzorgt van advies tot uitvoering",
-        "Innodak onderscheidt zich door een sterke focus op kwaliteit, veiligheid en duurzaamheid, ondersteund door relevante certificeringen en samenwerkingen",
-        "De onderneming bedient een loyaal en zakelijk klantenbestand, waaronder gemeenten, vastgoedbeheerders, zorginstellingen en grotere zakelijke klanten, met een belangrijke rol voor meerjarige onderhouds- en servicecontracten",
-        "De aandeelhouders zochten een strategische partner die kon bijdragen aan de volgende groeifase, waaronder verdere uitbouw van de Randstad-positie, versterking bij bestaande klanten en mogelijke buy-and-build kansen"
-      ],
-      scope: [
-        { phase: "Voorbereiding", items: ["Analyseren van (financiële) informatie en voorbereiden van verkoopdocumentatie (o.a. IM, teaser, kandidaat-koperslijst, etc.)", "Opstellen kandidaat-koperslijst en bepalen van de verkoopstrategie"] },
-        { phase: "Non-binding offer (NBO)", items: ["Analyseren van ontvangen NBO's", "Uitonderhandelen NBO's richting 'principeakkoord'"] },
-        { phase: "Due Diligence & SPA", items: ["Coördinatie Due Diligence", "Aanspreekpunt voor de adviseur van kandidaat-koper", "Uitonderhandelen van SPA/SHA"] },
-        { phase: "Closing", items: ["Afstemming met juridische en fiscale adviseurs DakAccent", "Ondersteuning richting afronding en closing van de transactie"] }
-      ],
-      toegevoegdeWaarde: [
-        "RSM CF ondersteunde bij het opzetten van een vaststellingsovereenkomst tussen de aandeelhouders, waarmee de onderlinge verhoudingen voorafgaand aan de verkoop werden afgestemd en de basis werd gelegd voor een gezamenlijk verkooptraject",
-        "RSM CF positioneerde Innodak als een kwalitatief hoogwaardige B2B-dakenspecialist met sterke klantrelaties, terugkerende service-inkomsten en aantrekkelijke groeimogelijkheden, wat heeft bijgedragen aan competitieve spanning in het proces",
-        "RSM CF begeleidde de onderhandelingen over de earn-out structuur en zorgde voor heldere afspraken over de voorwaarden en berekeningsmethodiek, waardoor het risico op discussies na closing werd beperkt",
-        "RSM CF ondersteunde bij de overdracht van materiële vaste activa naar de persoonlijke holdings van de verkopers, zonder impact op de ondernemingswaarde of de overeengekomen transactievoorwaarden"
-      ],
-      kerncijfers: { omzet: "€4,2m", ebitda: "€840k", medewerkers: "12", jaarErvaring: "90+" },
-      banner: "Een optimaal competitief transactieproces wordt gegarandeerd door de \"full-service M&A-ondersteuning\" van RSM"
-    }
-    // more case studies can be added here over time
-  },
-
-  // --- Services wheel content ---
-  // NOTE: the spec for this block was truncated in the brief; the content
-  // below is taken verbatim from the source template deck (slide 14) and
-  // should be replaced if a different version is intended.
+  // Services wheel — taken verbatim from the source template deck (slide 14).
   servicesWheel: [
     { key:"cf",  short:"Corporate\nFinance",    label:"Corporate Finance", color:"#009CDE", items:[
         "Buy-side advies", "Sell-side advies", "Fusiebegeleiding", "M&A strategie ontwikkeling", "M&A target search" ] },
@@ -784,7 +849,7 @@ const RSM_FIXED_DATA = {
         "Structureren van financieringsbehoefte", "Assisteren bij herfinanciering", "CAPEX financiering", "M&A financiering" ] }
   ],
 
-  // --- CF focus profile (update annually, not per deal) ---
+  // CF focus profile (update annually, not per deal)
   focusProfile: [
     { k:"Markt",            v:"Nederlandse MKB(+) markt" },
     { k:"EBITDA",           v:"€0,5m – €5,0m" },
@@ -792,8 +857,8 @@ const RSM_FIXED_DATA = {
     { k:"Sectorfocus",      v:"Facilitaire diensten, logistiek, productie, zorg, IT en e-commerce" }
   ],
 
-  // --- Stylised NL map: coordinates per city, and which cities host CF ---
-  // firmStats.officeCities drives which cities are plotted.
+  // Stylised NL map: coordinates per city; firmStats.officeCities drives
+  // which cities are plotted, cfOfficeCities marks the CF offices.
   mapCoords: {
     "Alkmaar":   { x:74,  y:86  },
     "Amsterdam": { x:92,  y:104 },
@@ -806,7 +871,7 @@ const RSM_FIXED_DATA = {
   cfOfficeCities: ["Amsterdam", "Utrecht"]
 };
 // ============================================================
-// END RSM_FIXED_DATA
+// END RSM FIXED CONTENT LIBRARY
 // ============================================================
 
 
@@ -820,8 +885,12 @@ const DEAL = {
   pitchTitle: "Kennismaking RSM Corporate Finance",
   date: "[Datum]",
 
-  // Pick 1-3 ids from RSM_FIXED_DATA.teamRoster
-  dealTeamIds: ["mikel-hoppenbrouwers"],
+  // SELECTION POINT 1 — pick 1-3 ids from TEAM_ROSTER.
+  dealTeamMemberIds: ["mikel-hoppenbrouwers"],
+
+  // SELECTION POINT 2 — pick the CASE_STUDY_LIBRARY entry most relevant
+  // to this target's sector, or null to leave the case study out.
+  caseStudyId: "innodak-dakaccent",
 
   // Pick tombstone ids relevant to the target's sector.
   // Leave as an empty array to show the full library.
@@ -836,11 +905,7 @@ const DEAL = {
     "lotec-vdk",
     "sustainablebuildings-fudura",
     "vlac-hsb"
-  ],
-
-  // OPTIONAL — id from RSM_FIXED_DATA.caseStudies, or null to leave
-  // the case study out of this pitch entirely.
-  caseStudyId: "innodak-dakaccent"
+  ]
 };
 // ============================================================
 // END DEAL CONFIG
@@ -873,6 +938,12 @@ const DEAL = {
   function icon(kind){
     const s = svgEl("svg", { viewBox:"0 0 24 24", width:22, height:22, fill:"none",
                              stroke:BLUE, "stroke-width":1.5, "stroke-linecap":"round", "stroke-linejoin":"round" });
+    // "handshake" is drawn as the two-person glyph: a stroke-only handshake
+    // is not legible at 22px, and the key is only used for the headcount
+    // metric, where two people reads more clearly anyway. Swap this line
+    // out if a proper handshake mark becomes available.
+    if(kind === "handshake") kind = "people";
+
     if(kind === "people"){
       s.appendChild(svgEl("circle", { cx:9, cy:8, r:3.2 }));
       s.appendChild(svgEl("path", { d:"M3.2 19.6c0-3.4 2.6-5.7 5.8-5.7s5.8 2.3 5.8 5.7" }));
@@ -882,6 +953,16 @@ const DEAL = {
       s.appendChild(svgEl("circle", { cx:12, cy:8.6, r:5.4 }));
       s.appendChild(svgEl("path", { d:"M8.6 13.2 7.2 21.4 12 18.7l4.8 2.7-1.4-8.2" }));
       s.appendChild(svgEl("path", { d:"M12 6.1l.95 1.9 2.1.3-1.52 1.5.36 2.1-1.89-1-1.89 1 .36-2.1-1.52-1.5 2.1-.3z" }));
+    } else if(kind === "trending-up"){
+      s.appendChild(svgEl("path", { d:"M3 17.5l5.5-5.5 3.5 3.5 7-7" }));
+      s.appendChild(svgEl("path", { d:"M15 8.5h4.5V13" }));
+    } else if(kind === "pie-chart"){
+      s.appendChild(svgEl("circle", { cx:12, cy:12, r:8.4 }));
+      s.appendChild(svgEl("path", { d:"M12 3.6V12h8.4" }));
+    } else if(kind === "calendar"){
+      s.appendChild(svgEl("rect", { x:3.2, y:5.4, width:17.6, height:15.4, rx:2 }));
+      s.appendChild(svgEl("path", { d:"M3.2 10.2h17.6" }));
+      s.appendChild(svgEl("path", { d:"M8.2 3.2v4.2M15.8 3.2v4.2" }));
     } else {
       s.appendChild(svgEl("circle", { cx:12, cy:12, r:3.1 }));
       s.appendChild(svgEl("circle", { cx:12, cy:12, r:6.6 }));
@@ -905,21 +986,24 @@ const DEAL = {
     document.title = DEAL.companyName + " — " + DEAL.pitchTitle;
   }
 
-  // ---------- deal team (DEAL picks 1-3 people by id) ----------
+  // ---------- deal team — SELECTION POINT 1 ----------
+  // Renders the 1-3 people named in DEAL.dealTeamMemberIds, each with
+  // their own recent deals. Profiles come from TEAM_ROSTER and are never
+  // rewritten per pitch.
   function renderDealTeam(){
     const host = document.getElementById("dealTeamCards");
     host.innerHTML = "";
 
-    DEAL.dealTeamIds.forEach(id => {
-      const p = FD.teamRoster[id];
+    DEAL.dealTeamMemberIds.forEach(id => {
+      const p = TEAM_ROSTER.find(m => m.id === id);
       if(!p){
-        host.appendChild(el("div", "team-missing", 'Onbekend team-id: "' + id + '"'));
+        host.appendChild(el("div", "team-missing", 'Onbekend team-id: "' + id + '" — controleer DEAL.dealTeamMemberIds'));
         return;
       }
       const row = el("div", "team-member");
 
       const photo = el("div", "photo-ph", "Foto");
-      photo.title = p.photoPath;
+      photo.title = p.photoNote;
       row.appendChild(photo);
 
       const info = el("div", "team-info");
@@ -936,13 +1020,38 @@ const DEAL = {
       const ul = el("ul", "team-bio");
       p.bio.forEach(b => ul.appendChild(el("li", null, b)));
       info.appendChild(ul);
-
       row.appendChild(info);
+
+      // this person's own recent transactions
+      if(p.recentDeals && p.recentDeals.length){
+        const deals = el("div", "member-deals");
+        deals.appendChild(el("div", "member-deals-h", "Recente transacties"));
+        p.recentDeals.forEach(d => deals.appendChild(recentDealTile(d)));
+        row.appendChild(deals);
+      }
+
       host.appendChild(row);
     });
   }
 
-  // ---------- headline stats + award beside the team ----------
+  // A recent-deal tile handles both shapes in the roster: with a target
+  // (RSM advised X in a deal with Y) and without (RSM advises an
+  // unnamed client), plus an optional status tag such as PENDING.
+  function recentDealTile(d){
+    const tile = el("div", "mini-tomb");
+    tile.appendChild(el("div", "st", d.status));
+    if(d.target) tile.appendChild(el("div", "pty", d.target));
+    tile.appendChild(el("div", "desc", d.description));
+    if(d.counterparty) tile.appendChild(el("div", "pty", d.counterparty));
+    if(d.tag){
+      const wrap = el("div");
+      wrap.appendChild(el("span", "tag", d.tag));
+      tile.appendChild(wrap);
+    }
+    return tile;
+  }
+
+  // ---------- firm credentials band beneath the team ----------
   function renderTeamSide(){
     const s = FD.firmStats;
 
@@ -1131,16 +1240,22 @@ const DEAL = {
     });
   }
 
-  // ---------- case study (OPTIONAL per deal) ----------
+  // ---------- case study — SELECTION POINT 2 ----------
+  // Pulls one entry from CASE_STUDY_LIBRARY. The scope box below it is
+  // RSM_STANDARD_SCOPE — identical for every case study, because it
+  // describes RSM's process rather than this particular transaction.
   function renderCaseStudy(){
     const card = document.getElementById("caseStudyCard");
-    const cs = DEAL.caseStudyId ? FD.caseStudies[DEAL.caseStudyId] : null;
+    const cs = DEAL.caseStudyId
+      ? CASE_STUDY_LIBRARY.find(c => c.id === DEAL.caseStudyId)
+      : null;
 
-    // no case study selected (or unknown id) — remove the exhibit entirely
+    // nothing selected (or an unknown id) — drop the exhibit entirely
     if(!cs){ card.remove(); return; }
 
-    document.getElementById("csBanner").textContent = cs.banner;
-    document.getElementById("csTitle").textContent = cs.title;
+    document.getElementById("csTitle").textContent = cs.headline;
+    document.getElementById("csSector").textContent = cs.sector;
+    document.getElementById("csBanner").textContent = cs.footerLine;
 
     const sit = document.getElementById("csSituation");
     sit.innerHTML = "";
@@ -1148,32 +1263,30 @@ const DEAL = {
 
     const val = document.getElementById("csValue");
     val.innerHTML = "";
-    cs.toegevoegdeWaarde.forEach(s => val.appendChild(el("li", null, s)));
+    cs.uitdagingen.forEach(s => val.appendChild(el("li", null, s)));
 
+    // RSM's standard scope — shared, not part of the case study entry
     const ph = document.getElementById("csPhases");
     ph.innerHTML = "";
-    cs.scope.forEach((p, i) => {
+    RSM_STANDARD_SCOPE.forEach(p => {
       const step = el("div", "step");
-      step.appendChild(el("div", "step-num", String(i+1)));
-      step.appendChild(el("div", "step-t", p.phase));
+      step.appendChild(el("div", "step-num", String(p.phase)));
+      step.appendChild(el("div", "step-t", p.title));
       const ul = el("ul");
-      p.items.forEach(it => ul.appendChild(el("li", null, it)));
+      p.bullets.forEach(it => ul.appendChild(el("li", null, it)));
       step.appendChild(ul);
       ph.appendChild(step);
     });
 
-    const k = cs.kerncijfers;
     const mr = document.getElementById("csMetrics");
     mr.innerHTML = "";
-    [
-      { v:k.omzet,        l:"Omzet" },
-      { v:k.ebitda,       l:"EBITDA" },
-      { v:k.medewerkers,  l:"Medewerkers" },
-      { v:k.jaarErvaring, l:"Jaar ervaring" }
-    ].forEach(m => {
+    cs.kerncijfers.forEach(m => {
       const tile = el("div", "metric");
-      tile.appendChild(el("div", "v num", m.v));
-      tile.appendChild(el("div", "l", m.l));
+      const ico = el("div", "metric-icon");
+      ico.appendChild(icon(m.icon));
+      tile.appendChild(ico);
+      tile.appendChild(el("div", "v num", m.value));
+      tile.appendChild(el("div", "l", m.label));
       mr.appendChild(tile);
     });
   }
